@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+    <title>FireStore Chat</title>
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/8.3.0/firebase-app.js"></script>
@@ -17,26 +17,19 @@
     <script defer src="/__/firebase/8.3.0/firebase-analytics.js"></script>
     <script defer src="/__/firebase/8.3.0/firebase-remote-config.js"></script>
     <script defer src="/__/firebase/8.3.0/firebase-performance.js"></script>
-    <!-- 
+    <!--
       initialize the SDK after all desired features are loaded, set useEmulator to false
       to avoid connecting the SDK to running emulators.
     -->
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
+    <style>
+      #chatlog{ width:500px; height:300px; border:1px solid gray; overflow-y:scroll; }
+      #uname{ width:80px; float:left; margin-right:10px; padding-top:5px; text-align:center}
+      #msg{ width:330px; height:30px; margin-right:10px; font-size:12pt;}
+      #sbmt{ width:100px; height:30px; }
     </style>
+
   </head>
   <body>
     <div id="message">
@@ -68,13 +61,13 @@
         try {
           let app = firebase.app();
           let features = [
-            'auth', 
-            'database', 
+            'auth',
+            'database',
             'firestore',
             'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
+            'messaging',
+            'storage',
+            'analytics',
             'remoteConfig',
             'performance',
           ].filter(feature => typeof app[feature] === 'function');
@@ -84,6 +77,145 @@
           loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
         }
       });
+    </script>
+
+    <h1>FireStore Chat</h1>
+
+    <!-- 発言が表示される領域 -->
+    <ul id="chatlog"></ul>
+
+    <!-- 入力フォーム -->
+    <form id="form1">
+      <div id="uname"></div>
+      <input type="text" id="msg"><button type="button" id="sbmt">送信</button>
+    </form>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-firestore.js"></script>
+    <script src="/js/config.js"></script>
+    <script>
+      //---------------------------------------
+      // チャット初期処理
+      //---------------------------------------
+      // ユーザー名をランダムに決める
+      var uname = getUName();
+      document.getElementById("uname").innerHTML = uname;
+
+      // テキストボックスにfocus
+      // document.getElementById("msg").focus();
+
+      //---------------------------------------
+      // Firestoreの準備
+      //---------------------------------------
+      // Firestoreのインスタンス作成
+      var db = firebase.firestore();
+
+      // チャットルームのリファレンス取得
+      var messagesRef = db.collection("chatroom").doc("room1").collection("messages");
+
+      /**
+       * 同期処理
+       **/
+      messagesRef.orderBy("date", "asc").limit(20).onSnapshot( (snapshot) => {
+         snapshot.docChanges().forEach((change) => {
+           // 追加
+           if ( change.type === 'added' ) {
+             addLog(change.doc.id, change.doc.data());
+           }
+           // 更新
+           else if( change.type === 'modified' ){
+             modLog(change.doc.id, change.doc.data());
+           }
+           // 削除
+           else if ( change.type === 'removed' ) {
+             removeLog(change.doc.id);
+           }
+         });
+       });
+
+       /**
+     * 送信ボタン押下
+     **/
+    document.getElementById("sbmt").addEventListener("click", ()=>{
+      let msg = document.getElementById("msg").value;
+      if( msg.length === 0 ){
+        return(false);
+      }
+      // メッセージをfirestoreへ送信
+      messagesRef.add({
+        name: uname,
+        msg: msg,
+        date: new Date().getTime()
+      })
+      .then(()=>{
+        let msg = document.getElementById("msg");
+        msg.focus();
+        msg.value = "";
+      })
+    });
+    // submitイベントは（いったん）無視する
+    document.getElementById("form1").addEventListener("submit", (e)=>{
+      e.preventDefault();
+    });
+
+
+    /**
+     * ログに追加
+     */
+    function addLog(id, data){
+      // 追加するHTMLを作成
+      let log = `${data.name}: ${data.msg} (${getStrTime(data.date)})`;
+      let li  = document.createElement('li');
+      li.id   = id;
+      li.appendChild(document.createTextNode(log));
+
+      // 表示エリアへ追加
+      let chatlog = document.getElementById("chatlog");
+      chatlog.insertBefore(li, chatlog.firstChild);
+    }
+
+    /**
+     * ログを更新
+     */
+    function modLog(id, data){
+      let log = document.getElementById(id);
+      if( log !== null ){
+        log.innerText = `${data.name}: ${data.msg} (${getStrTime(data.date)})`;
+      }
+    }
+
+    /**
+     * ログを削除
+     **/
+    function removeLog(id){
+      let log = document.getElementById(id);
+      if( log !== null ){
+        log.parentNode.removeChild(log);
+      }
+    }
+
+
+    /**
+     * ユーザー名をランダムに決定
+     **/
+     function getUName(){
+      let master = ["キティ", "マイメロ", "プリン", "ぐでたま", "烈子", "シナモン", "たあ坊", "キキ", "ララ", "切り身"];
+      let i      = Math.floor( Math.random() * master.length );
+      return( master[i] );
+    }
+
+    /**
+     * UNIX TIME => MM-DD hh:mm
+     **/
+    function getStrTime(time){
+      let t = new Date(time);
+      return(
+        ("0" + (t.getMonth() + 1)).slice(-2) + "-" +
+        ("0" + t.getDate()       ).slice(-2) + " " +
+        ("0" + t.getHours()      ).slice(-2) + ":" +
+        ("0" + t.getMinutes()    ).slice(-2)
+      );
+    }
     </script>
   </body>
 </html>
