@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FireStore Chat</title>
+  <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+  <style>
+  #chatlog{ width:500px; height:300px; border:1px solid gray; overflow-y:scroll; }
+  #pleaselogin{ width: 520px; border: 1px solid gray; padding: 10px; background-color: lightgrey; }
+  #uname{ width:80px; float:left; margin-right:10px; padding-top:5px; text-align:center}
+  #msg{ width:330px; height:30px; margin-right:10px; font-size:12pt;}
+  #sbmt{ width:100px; height:30px; }
+  #counter{ width: 330px; height: 30px; margin-right: 10px; font-size: 12pt;}
+  .hide{display: :none}
+  </style>
+</head>
+<body>
+
+  <!-- script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const loadEl = document.querySelector('#load');
+  // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+  // // The Firebase SDK is initialized and available here!
+  //
+  // firebase.auth().onAuthStateChanged(user => { });
+  // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+  // firebase.firestore().doc('/foo/bar').get().then(() => { });
+  // firebase.functions().httpsCallable('yourFunction')().then(() => { });
+  // firebase.messaging().requestPermission().then(() => { });
+  // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+  // firebase.analytics(); // call to activate
+  // firebase.analytics().logEvent('tutorial_completed');
+  // firebase.performance(); // call to activate
+  //
+  // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+  try {
+  let app = firebase.app();
+  let features = [
+  'auth',
+  'database',
+  'firestore',
+  'functions',
+  'messaging',
+  'storage',
+  'analytics',
+  'remoteConfig',
+  'performance',
+  ].filter(feature => typeof app[feature] === 'function');
+  loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
+} catch (e) {
+console.error(e);
+loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+}
+});
+</script -->
+
+<h1>FireStore Chat</h1>
+
+<!-- 発言が表示される領域 -->
+<ul id="chatlog"></ul>
+
+<!-- 入力フォーム -->
+<div id="pleaselogin" class="hide">
+  ※チャットへの書き込みは<a href="/db/firestore3/login.html">ログイン</a>が必要です。
+</div>
+
+<form id="form1" class="hide">
+  <div id="uname"></div>
+  <input type="text" id="msg"><button type="button" id="sbmt">送信</button>
+  <div id="counter"></div>
+</form>
+
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-firestore.js"></script>
+<script src="/js/config.js"></script>
+<script>
+/**
+* Chatオブジェクト
+**/
+var Chat = {
+  //----------------------------------------
+  // プロパティ
+  //----------------------------------------
+  user: {
+    name: null
+  },
+  db: null,
+  messagesRef: null,
+
+  //----------------------------------------
+  // メソッド
+  //----------------------------------------
+  /**
+  * 初期処理
+  **/
+  init: () => {
+    this.db = firebase.firestore();
+    this.messagesRef = this.db.collection("chatroom").doc("room1").collection("messages");
+
+    //---------------------
+    // 同期処理
+    //---------------------
+    this.messagesRef.orderBy("date", "asc").limit(20).onSnapshot( (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        // 追加
+        if ( change.type === 'added' ) {
+          Chat.addLog(change.doc.id, change.doc.data());
+        }
+        // 更新
+        else if( change.type === 'modified' ){
+          Chat.modLog(change.doc.id, change.doc.data());
+        }
+        // 削除
+        else if ( change.type === 'removed' ) {
+          Chat.removeLog(change.doc.id);
+        }
+      });
+    });
+
+    //---------------------
+    // 送信ボタン
+    //---------------------
+    document.getElementById("sbmt").addEventListener("click", ()=>{
+      let msg = document.getElementById("msg").value;
+      if( msg.length !== 0 ){
+        Chat.sendLog(msg);
+      }
+    });
+    // submitイベントは（いったん）無視する
+    document.getElementById("form1").addEventListener("submit", (e)=>{
+      e.preventDefault();
+    });
+  },
+
+  /**
+  * Firestoreへ送信
+  *
+  * @param {string} str 送信内容
+  **/
+  sendLog: (str)=>{
+    this.messagesRef.add({
+      name: Chat.user.name,
+      msg: str,
+      date: new Date().getTime()
+    })
+    .then(()=>{
+      let msg = document.getElementById("msg");
+      msg.focus();
+      msg.value = "";
+    })
+    .catch((error) => {
+      console.log(`追加に失敗しました (${error})`);
+    });
+  },
+
+  /**
+  * 描画エリアにログを追加
+  *
+  * @param {string} id
+  * @param {object} data
+  **/
+  addLog: (id, data)=>{
+    // 追加するHTMLを作成
+    let log = `${data.name}: ${data.msg} (${getStrTime(data.date)})`;
+    let li  = document.createElement('li');
+    li.id   = id;
+    li.appendChild(document.createTextNode(log));
+
+    // 表示エリアへ追加
+    let chatlog = document.getElementById("chatlog");
+    chatlog.insertBefore(li, chatlog.firstChild);
+  },
+
+  /**
+  * 描画エリアのログを変更
+  *
+  * @param {string} id
+  * @param {object} data
+  **/
+  modLog: (id, data)=>{
+    let log = document.getElementById(id);
+    if( log !== null ){
+      log.innerText = `${data.name}: ${data.msg} (${getStrTime(data.date)})`;
+    }
+  },
+
+  /**
+  * 描画エリアのログを削除
+  *
+  * @param {string} id
+  **/
+  removeLog: (id)=>{
+    let log = document.getElementById(id);
+    if( log !== null ){
+      log.parentNode.removeChild(log);
+    }
+  }
+};  // Chat
+
+
+/**
+* 描画エリアのログを変更
+*
+* @param {string} id
+* @param {object} data
+**/
+firebase.auth().onAuthStateChanged( (user) => {
+  // ログイン状態なら書き込みフォームを開放
+  if( user !== null ){
+    //隠す
+    document.getElementById("pleaselogin").classList.add("hide");
+
+    //表示
+    document.getElementById("chatlog").classList.remove("hide");
+    document.getElementById("form1").classList.remove("hide");
+
+    // ユーザー名を確保
+    Chat.user.name = user.displayName;
+    document.getElementById("uname").innerText = Chat.user.name;
+  }
+
+  // Firestore処理開始
+  Chat.init();
+});
+
+/**
+* UNIX TIME => MM-DD hh:mm
+**/
+function getStrTime(time){
+  let t = new Date(time);
+  return(
+    ("0" + (t.getMonth() + 1)).slice(-2) + "-" +
+    ("0" + t.getDate()       ).slice(-2) + " " +
+    ("0" + t.getHours()      ).slice(-2) + ":" +
+    ("0" + t.getMinutes()    ).slice(-2)
+  );
+}
+</script>
+</body>
+</html>
