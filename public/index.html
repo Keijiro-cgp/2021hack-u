@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FireStore Chat</title>
+  <title>Chates</title>
   <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
   <style>
@@ -18,14 +18,16 @@
 </head>
 <body>
 
+<!--タイトル-->
 <h1>Welcome to Chaters!</h1>
 
+<!--トークルーム選択-->
+<a href="/room001.html">チャットルーム1</a>
+  
 <!-- 入力フォーム -->
 <div id="pleaselogin" class="hide">
   ※チャットへの書き込みは<a href="/db/firestore3/login.html">ログイン</a>が必要です。
 </div>
-
-<a href="/room001.html">チャットルーム1</a>
 
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
