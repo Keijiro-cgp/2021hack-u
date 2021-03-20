@@ -25,9 +25,12 @@ var db = firebase.firestore;
 db.collection("chatroom").document("room1").collection("messages").where("msg").get()
   .then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
       count += doc.data().msg.length;
     });
-  })
+  }).catch((error) => {
+    console.log("Error getting documents: ", error);
+  });
 
 document.getElementById("ranking").innerText = count;
 
