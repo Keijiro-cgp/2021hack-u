@@ -72,7 +72,7 @@ loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
   <input type="text" id="msg"><button type="button" id="sbmt">送信</button>
   <div id="counter"></div>
 </form>
-  
+
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-firestore.js"></script>
@@ -104,7 +104,7 @@ var Chat = {
     //---------------------
     // 同期処理
     //---------------------
-    this.messagesRef.orderBy("date", "asc").limit(20).onSnapshot( (snapshot) => {
+    this.messagesRef.orderBy("date", "asc").limit(30).onSnapshot( (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         // 追加
         if ( change.type === 'added' ) {
