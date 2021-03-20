@@ -24,7 +24,7 @@ var count = 0;
 (async () => {
   try {
     const db = firebase.firestore();
-    const querySnapshot = await db.("chatroom").doc("room1").collection("messages").get();
+    const querySnapshot = await db.collection("chatroom").doc("room1").collection("messages").get();
     querySnapshot.forEach((doc) => {
       count += doc.data().msg.length;
     });
