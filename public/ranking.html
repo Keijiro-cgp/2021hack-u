@@ -21,17 +21,13 @@
 
 var count = 0;
 
-(async () => {
-  try {
-    const db = firebase.firestore();
-    const querySnapshot = await db.collection("chatroom").doc("room1").collection("messages").get();
+var db = firebase.firestore;
+db.collection("chatroom").document("room1").collection("messages").where("msg").get()
+  .then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       count += doc.data().msg.length;
     });
-  } catch (error) {
-    console.log("Error getting documents: ", error);
-  }
-})();
+  })
 
 document.getElementById("ranking").innerText = count;
 
