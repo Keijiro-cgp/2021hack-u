@@ -3,7 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chates</title>
+  <title>Chaters</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon" type="image/png" href="fabicon.png">
   <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
   <style>
@@ -19,7 +21,9 @@
 <body>
 
 <!--タイトル-->
-<h1>Welcome to Chaters!</h1>
+<div style="text-align:center">
+<img src="Chaters_base.png" alt="タイトル">
+</div>
 
 <!--トークルーム選択-->
 <div class="talkroom">
@@ -27,14 +31,14 @@
 <div>
   
 <!--ランキング閲覧-->
-<div class="ranking">
+<div class="rabking" style="position:absolute; top:370px; left:1040px">
 <br>
-<a href="/ranking.html">ランキング</a>はここから！
+<a href="/ranking.html"><img src="ranking.png" alt="ランキング" width="470" height="230"></a>
 </div>
   
-<!-- 入力フォーム -->
-<div id="pleaselogin" class="hide">
-  ※チャットへの書き込みは<a href="/db/firestore3/login.html">ログイン</a>が必要です。
+<!--ログイン-->
+<div class="login" style="position:absolute; top:650px; left:1040px">
+  <a href="/db/firestore3/login.html"><img src="login.png" alt="ログイン" width="470" height="230"></a>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
