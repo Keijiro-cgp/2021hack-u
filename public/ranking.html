@@ -28,7 +28,7 @@
       var buff = [];
       querySnapshot.forEach((doc) => {
         var data = doc.data();
-        buff.push([data.msg]);
+        buff.push([data]);
       });
       forEach((buff, b) => {
         count += b;
