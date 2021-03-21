@@ -29,7 +29,7 @@
 <div class="takidashi" style="position:absolute; top:300px; left:210px">
   <img src="takidashi.png" alt="吹き出し" width="750px" height="665px">
 </div>
-  
+
 <!--トークルーム選択-->
 <div class="talkroom1" style="position:absolute; top:370px; left:360px">
   <div class="room001"><a href="/room001.html"><img src="group1_color.png" alt="ルーム1" width="550" height="215"></a></div>
@@ -40,18 +40,18 @@
 <div class="talkroom3" style="position:absolute; top:700px; left:360px">
   <div class="room003"><a href="/room003.html"><img src="group3_color.png" alt="ルーム3" width="550" height="215"></a></div>
 </div>
-  
+
 <!--ランキング閲覧-->
 <div class="ranking" style="position:absolute; top:370px; left:1040px">
 <br>
 <a href="/ranking.html"><img src="ranking_1.png" alt="ランキング" width="470" height="230"></a>
 </div>
-  
+
 <!--王冠-->
 <div class="oukan" style="position:absolute; top:230px; left:1330px">
   <img src="king.png" alt="王冠" width="250" height="250">
 </div>
-  
+
 <!--ログイン-->
 <div class="login" style="position:absolute; top:670px; left:1040px">
   <a href="/db/firestore3/login.html"><img src="login_2.png" alt="ログイン" width="470" height="230"></a>
@@ -61,15 +61,30 @@
 <div class="loginicon" style="position:absolute; top:600px; left:1000px">
   <img src="icon.png" alt="びっくりマーク" width="170" height="150">
 </div>
-                                                                
+
 <!--triangle-->
 <div class="triangle" style="position:absolute; top:0px; left:0px">
   <img src="black_triangle.png" alt="△" width="300" height="300">
 </div>
-  
+
+<div class="logout" id="logout" style="position:absolute; top:670px; left:1500px">
+  <img src="logout.png" alt="logout" width="470" height="230">
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-firestore.js"></script>
 <script src="/js/config.js"></script>
+<script>
+  document.getElementById("logout").onclick = function() {
+    firebase.auth().onAuthStateChanged((user) => {
+      firebase.auth().signOut().then(()=>{
+        console.log("ログアウトしました");
+      }).catch((error) => {
+        console.log("ログアウト時にエラーが発生しました");
+      })
+    })
+  }
+</script>
 </body>
 </html>
