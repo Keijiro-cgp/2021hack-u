@@ -24,12 +24,15 @@
   var db = firebase.firestore();
   db.collection("chatroom").document("room1").collection("messages").get()
   .then((querySnapshot) => {
+    console.log("Now: querySnapshot");
     var buff = [];
     querySnapshot.forEach((doc) => {
+      console.log("Now: forEach((doc))");
       var data = doc.data();
       buff.push({data});
     });
     forEach((buff, b) => {
+      console.log("Now: forEach((buff, b))");
       console.log(b);
       count += b;
     });
