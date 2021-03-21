@@ -21,10 +21,10 @@
   //console.log("running...");
   var msgs;
   var count = 0;
-  firebase.firestore().settings({
+  var db = firebase.firestore();
+  db.settings({
     ignoreUndefinedProperties: true,
   });
-  var db = firebase.firestore();
   /*console.log(db.collection("chatroom"));
   console.log(db.collection("chatroom").doc("room1"));
   console.log(db.collection("chatroom").doc("room1").collection("messages"));*/
