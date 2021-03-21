@@ -22,9 +22,6 @@
   var all_msgs = "";
   var count = 0;
   var db = firebase.firestore();
-  /*console.log(db.collection("chatroom"));
-  console.log(db.collection("chatroom").doc("room1"));
-  console.log(db.collection("chatroom").doc("room1").collection("messages"));*/
   db.collection("chatroom").doc("room1").collection("messages").where("msg", "!=", null)
   .get().then((querySnapshot) => {
     //console.log("Now: querySnapshot");
@@ -37,7 +34,7 @@
     buff.forEach((b) => {
       //console.log("Now: forEach((buff, b))");
       //console.log(b.data.msg);
-      console.log(b);
+      //console.log(b);
       all_msgs += b.data.msg;
     });
     console.log(all_msgs);
