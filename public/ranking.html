@@ -25,7 +25,8 @@
   var db = firebase.firestore();
   var ranking_doc = document.getElementById("ranking_area");
   var count_list = [];
-  db.collection("chatroom").forEach((doc) => {
+  db.collection("chatroom").get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
     count_list.push(Msg_counter(doc.id));
   });
   console.log(count_list)
