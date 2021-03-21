@@ -20,8 +20,13 @@
   <script>
   console.log("running...");
   var count;
-
-  var db = firebase.firestore();
+  var db;
+  console.log(
+  db = firebase.firestore();
+  );
+  console.log(db.collection("chatroom"));
+  console.log(db.collection("chatroom").doc("room1"));
+  console.log(db.collection("chatroom").doc("room1").collection("messages"));
   db.collection("chatroom").document("room1").collection("messages").get()
   .then((querySnapshot) => {
     console.log("Now: querySnapshot");
