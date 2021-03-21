@@ -37,14 +37,13 @@
     buff.forEach((b) => {
       //console.log("Now: forEach((buff, b))");
       //console.log(b.data.msg);
-      msgs += b.data.msg;
+      if(b.data.name) msgs += b.data.msg;
     });
     console.log(msgs);
     console.log(msgs.length);
     count = msgs.length;
+    document.getElementById("ranking").innerText = count;
   });
-
-  document.getElementById("ranking").innerText = count;
 
 </script>
 </body>
