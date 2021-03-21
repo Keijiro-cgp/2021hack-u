@@ -38,9 +38,10 @@
     });
     buff.forEach((b) => {
       //console.log("Now: forEach((buff, b))");
-      console.log(b.data.msg);
+      //console.log(b.data.msg);
       count += b.data.msg;
     });
+    console.log(count);
   });
 
   document.getElementById("ranking").innerText = count;
