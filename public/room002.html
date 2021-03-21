@@ -10,8 +10,7 @@
   <style>
   #chatlog{ width:800px; height:500px; border:5px solid black; overflow-y:scroll; }
   #pleaselogin{padding: 10px;}
-  #uname{ width:80px; margin-right:10px; padding-top:5px; font-size: 20pt;}
-  #msg{ width:600px; height:50px; margin-right:480px; font-size:12pt;　top:0px;}
+  #msg{ width:775px; height:50px; font-size:12pt;　top:0px;}
   #counter{ width: 330px; height: 30px; margin-right: 10px; font-size: 12pt;}
   </style>
 </head>
@@ -23,7 +22,7 @@
 </div>
 
 <!--トークルームロゴ-->
-<div class="talkroom1" style="position:relative; top:0px; left:480px">
+<div class="talkroom1" style="position:absolute; top:0px; left:480px">
   <img src="talkroom.png" alt="トークルーム" width="450px" height="190px">
 </div>
 
@@ -33,7 +32,7 @@
 </div>
 
 <!-- 発言が表示される領域 -->
-<ul id="chatlog" style="position:relative; top:10px; left:510px"></ul>
+<ul id="chatlog" style="position:absolute; top:220px; left:510px"></ul>
 
 <!--ログイン-->
 <div id="pleaselogin" class="hide" style="position:absolute; top:130px">
@@ -42,14 +41,15 @@
 
 <!--文章打つところ-->
 <form id="form1" class="hide">
-  <div id="uname" style="position:relative; left:230px"></div>
-  <input type="text" id="msg" style="position:relative; left:500px">
-  <input type="image" id="sbmt" src="send.png" id="sbmt" width="80px" height="80px">
+  <input type="text" id="msg" style="position:absolute; top:750px; left:510px">
+  <input type="image" id="sbmt" src="send.png" width="80px" height="80px" style="position:absolute; top:735px; left:1300px">
   <div id="counter"></div>
 </form>
 
+<div id="uname" hidden></div>  
+  
 <!--参加者一覧-->
-<ul id="uname"></ul>
+<ul id="name"></ul>
 <div class="member" style="position:absolute; top:260px">
   <img src="participant.png" alt="メンバー" width="280px" height="130px">
 </div>
