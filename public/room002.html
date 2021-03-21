@@ -1,1 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chates</title>
+  <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
+  <style>
+  #chatlog{ width:800px; height:500px; border:5px solid black; overflow-y:scroll; }
+  #pleaselogin{padding: 10px;}
+  #uname{ width:80px; margin-right:10px; padding-top:5px; font-size: 20pt;}
+  #msg{ width:600px; height:50px; margin-right:480px; font-size:12pt;　top:0px;}
+  #counter{ width: 330px; height: 30px; margin-right: 10px; font-size: 12pt;}
+  </style>
+</head>
+<body>
+
+  <!-- script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const loadEl = document.querySelector('#load');
+  // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+  // // The Firebase SDK is initialized and available here!
+  //
+  // firebase.auth().onAuthStateChanged(user => { });
+  // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+  // firebase.firestore().doc('/foo/bar').get().then(() => { });
+  // firebase.functions().httpsCallable('yourFunction')().then(() => { });
+  // firebase.messaging().requestPermission().then(() => { });
+  // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+  // firebase.analytics(); // call to activate
+  // firebase.analytics().logEvent('tutorial_completed');
+  // firebase.performance(); // call to activate
+  //
+  // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+  try {
+  let app = firebase.app();
+  let features = [
+  'auth',
+  'database',
+  'firestore',
+  'functions',
+  'messaging',
+  'storage',
+  'analytics',
+  'remoteConfig',
+  'performance',
+  ].filter(feature => typeof app[feature] === 'function');
+  loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
+} catch (e) {
+console.error(e);
+loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+}
+});
+</script -->
+
+<!--トークルームロゴ-->
+<div class="talkroom1" style="position:relative; top:0px; left:300px">
+  <img src="talkroom.png" alt="トークルーム" width="450px" height="190px">
+</div>
+
+<!--戻るボタン-->
+<div class="return" style="position:absolute; top:0px">
+  <a href="/index.html"><img src="back.png" alt="戻る" width="150px" height="150px"></a>
+</div>
+
+<!-- 発言が表示される領域 -->
+<ul id="chatlog" style="position:relative; top:10px; left:330px"></ul>
+
+<!--ログイン-->
+<div id="pleaselogin" class="hide" style="position:absolute; top:130px">
+  <a href="/db/firestore3/login.html"><img src="login.png" alt="ログイン" width="180px" height="100px"></a>
+</div>
+
+<!--文章打つところ-->
+<form id="form1" class="hide">
+  <div id="uname" style="position:relative; left:230px"></div>
+  <input type="text" id="msg" style="position:relative; left:500px">
+  <input type="image" src="send.png" id="sbmt" width="80px" height="80px">
+  <div id="counter"></div>
+</form>
+
+<!--参加者一覧-->
+<ul id="uname"></ul>
+<div class="member" style="position:absolute; top:260px">
+  <img src="participant.png" alt="メンバー" width="280px" height="130px">
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-firestore.js"></script>
+<script src="/js/config.js"></script>
+<script>
+/**
+* Chatオブジェクト
+**/
+var Chat = {
+  //----------------------------------------
+  // プロパティ
+  //----------------------------------------
+  user: {
+    name: null
+  },
+  db: null,
+  messagesRef: null,
+
+  //----------------------------------------
+  // メソッド
+  //----------------------------------------
+  /**
+  * 初期処理
+  **/
+  init: () => {
+    this.db = firebase.firestore();
+    this.messagesRef = this.db.collection("chatroom").doc("room2").collection("messages");
+
+    //---------------------
+    // 同期処理
+    //---------------------
+    this.messagesRef.orderBy("date", "asc").onSnapshot( (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        // 追加
+        if ( change.type === 'added' ) {
+          Chat.addLog(change.doc.id, change.doc.data());
+        }
+        // 更新
+        else if( change.type === 'modified' ){
+          Chat.modLog(change.doc.id, change.doc.data());
+        }
+        // 削除
+        else if ( change.type === 'removed' ) {
+          Chat.removeLog(change.doc.id);
+        }
+      });
+    });
+
+    //---------------------
+    // 送信ボタン
+    //---------------------
+    document.getElementById("sbmt").addEventListener("click", ()=>{
+      let msg = document.getElementById("msg").value;
+      if( msg.length !== 0 ){
+        Chat.sendLog(msg);
+      }
+    });
+    // submitイベントは（いったん）無視する
+    document.getElementById("form1").addEventListener("submit", (e)=>{
+      e.preventDefault();
+    });
+  },
+
+  /**
+  * Firestoreへ送信
+  *
+  * @param {string} str 送信内容
+  **/
+  sendLog: (str)=>{
+    this.messagesRef.add({
+      name: Chat.user.name,
+      msg: str,
+      date: new Date().getTime()
+    })
+    .then(()=>{
+      let msg = document.getElementById("msg");
+      msg.focus();
+      msg.value = "";
+    })
+    .catch((error) => {
+      console.log(`追加に失敗しました (${error})`);
+    });
+  },
+
+  /**
+  * 描画エリアにログを追加
+  *
+  * @param {string} id
+  * @param {object} data
+  **/
+  addLog: (id, data)=>{
+    // 追加するHTMLを作成
+    let log = `${data.name}: ${data.msg} (${getStrTime(data.date)})`;
+    let li  = document.createElement('li');
+    li.id   = id;
+    li.appendChild(document.createTextNode(log));
+
+    // 表示エリアへ追加
+    let chatlog = document.getElementById("chatlog");
+    chatlog.insertBefore(li, chatlog.firstChild);
+  },
+
+  /**
+  * 描画エリアのログを変更
+  *
+  * @param {string} id
+  * @param {object} data
+  **/
+  modLog: (id, data)=>{
+    let log = document.getElementById(id);
+    if( log !== null ){
+      log.innerText = `${data.name}: ${data.msg} (${getStrTime(data.date)})`;
+    }
+  },
+
+  /**
+  * 描画エリアのログを削除
+  *
+  * @param {string} id
+  **/
+  removeLog: (id)=>{
+    let log = document.getElementById(id);
+    if( log !== null ){
+      log.parentNode.removeChild(log);
+    }
+  }
+};  // Chat
+
+
+/**
+* 描画エリアのログを変更
+*
+* @param {string} id
+* @param {object} data
+**/
+firebase.auth().onAuthStateChanged( (user) => {
+  // ログイン状態なら書き込みフォームを開放
+  if( user !== null ){
+    //隠す
+    document.getElementById("pleaselogin").classList.add("hide");
+
+    //表示
+    document.getElementById("chatlog").classList.remove("hide");
+    document.getElementById("form1").classList.remove("hide");
+
+    // ユーザー名を確保
+    Chat.user.name = user.displayName;
+    document.getElementById("uname").innerText = Chat.user.name;
+  }
+
+  // Firestore処理開始
+  Chat.init();
+});
+
+/**
+* UNIX TIME => MM-DD hh:mm
+**/
+function getStrTime(time){
+  let t = new Date(time);
+  return(
+    ("0" + (t.getMonth() + 1)).slice(-2) + "-" +
+    ("0" + t.getDate()       ).slice(-2) + " " +
+    ("0" + t.getHours()      ).slice(-2) + ":" +
+    ("0" + t.getMinutes()    ).slice(-2)
+  );
+}
+</script>
+</body>
+</html>
