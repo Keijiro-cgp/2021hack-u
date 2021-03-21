@@ -19,7 +19,7 @@
   <script src="/js/config.js"></script>
   <script>
 
-  var count = 0;
+  var count;
 
   (async () => {
     var db = firebase.firestore;
@@ -30,7 +30,9 @@
         var data = doc.data();
         buff.push([data.msg]);
       });
-      console.log(buff);
+      forEach((buff, b) => {
+        count += b;
+      });
     }).catch((error) => {
       console.log("Error getting documents: ", error);
     });
