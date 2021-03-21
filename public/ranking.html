@@ -25,7 +25,7 @@
   /*console.log(db.collection("chatroom"));
   console.log(db.collection("chatroom").doc("room1"));
   console.log(db.collection("chatroom").doc("room1").collection("messages"));*/
-  db.collection("chatroom").doc("room1").collection("messages").where("msg", "==", null)
+  db.collection("chatroom").doc("room1").collection("messages").where("msg", "!=", null)
   .then((querySnapshot) => {
     //console.log("Now: querySnapshot");
     var buff = [];
@@ -37,7 +37,7 @@
     buff.forEach((b) => {
       //console.log("Now: forEach((buff, b))");
       //console.log(b.data.msg);
-      if(b.data.name) msgs += b.data.msg;
+      msgs += b.data.msg;
     });
     console.log(msgs);
     console.log(msgs.length);
