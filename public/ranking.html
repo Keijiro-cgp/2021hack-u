@@ -22,7 +22,7 @@
   var count;
 
   (async () => {
-    var db = firebase.firestore;
+    var db = firebase.firestore();
     db.collection("chatroom").document("room1").collection("messages").get()
     .then((querySnapshot) => {
       var buff = [];
@@ -31,7 +31,7 @@
         buff.push([data]);
       });
       forEach((buff, b) => {
-        count += b;
+        count += b.string;
       });
     });
   });
