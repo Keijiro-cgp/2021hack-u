@@ -32,7 +32,7 @@
     querySnapshot.forEach((doc) => {
       //console.log("Now: forEach((doc))");
       var data = doc.data();
-      if(!data.keys().hasAll(['msg']))
+      if(data.exists)
       buff.push({data});
     });
     buff.forEach((b) => {
