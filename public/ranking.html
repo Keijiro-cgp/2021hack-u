@@ -18,21 +18,20 @@
   <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-firestore.js"></script>
   <script src="/js/config.js"></script>
   <script>
-
+  console.log("running...");
   var count;
 
-  (async () => {
-    var db = firebase.firestore();
-    db.collection("chatroom").document("room1").collection("messages").get()
-    .then((querySnapshot) => {
-      var buff = [];
-      querySnapshot.forEach((doc) => {
-        var data = doc.data();
-        buff.push({data});
-      });
-      forEach((buff, b) => {
-        count += b.string;
-      });
+  var db = firebase.firestore();
+  db.collection("chatroom").document("room1").collection("messages").get()
+  .then((querySnapshot) => {
+    var buff = [];
+    querySnapshot.forEach((doc) => {
+      var data = doc.data();
+      buff.push({data});
+    });
+    forEach((buff, b) => {
+      console.log(b);
+      count += b;
     });
   });
 
