@@ -198,10 +198,6 @@ firebase.auth().onAuthStateChanged( (user) => {
     //表示
     document.getElementById("chatlog").classList.remove("hide");
     document.getElementById("form1").classList.remove("hide");
-
-    // ユーザー名を確保
-    Chat.user.name = user.displayName;
-    document.getElementById("uname").innerText = Chat.user.name;
   }
 
   // Firestore処理開始
