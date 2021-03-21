@@ -36,7 +36,7 @@
       var data = doc.data();
       buff.push({data});
     });
-    forEach((buff, b) => {
+    buff.forEach((b) => {
       console.log("Now: forEach((buff, b))");
       console.log(b);
       count += b;
