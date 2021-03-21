@@ -19,14 +19,12 @@
   <script src="/js/config.js"></script>
   <script>
   console.log("running...");
-  var count = "";
-  var db;
-  console.log(
-  db = firebase.firestore()
-  );
-  console.log(db.collection("chatroom"));
+  var msgs;
+  var count;
+  var db = firebase.firestore();
+  /*console.log(db.collection("chatroom"));
   console.log(db.collection("chatroom").doc("room1"));
-  console.log(db.collection("chatroom").doc("room1").collection("messages"));
+  console.log(db.collection("chatroom").doc("room1").collection("messages"));*/
   db.collection("chatroom").doc("room1").collection("messages").get()
   .then((querySnapshot) => {
     //console.log("Now: querySnapshot");
@@ -39,10 +37,9 @@
     buff.forEach((b) => {
       //console.log("Now: forEach((buff, b))");
       //console.log(b.data.msg);
-      count += b.data.msg;
+      msgs += b.data.msg;
     });
-    console.log(count);
-    console.log(count.length);
+    count = msgs.length;
   });
 
   document.getElementById("ranking").innerText = count;
