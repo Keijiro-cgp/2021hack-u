@@ -29,7 +29,7 @@
   console.log(db.collection("chatroom").doc("room1").collection("messages"));
   db.collection("chatroom").doc("room1").collection("messages").get()
   .then((querySnapshot) => {
-    console.log("Now: querySnapshot");
+    //console.log("Now: querySnapshot");
     var buff = [];
     querySnapshot.forEach((doc) => {
       //console.log("Now: forEach((doc))");
@@ -42,6 +42,7 @@
       count += b.data.msg;
     });
     console.log(count);
+    console.log(count.length);
   });
 
   document.getElementById("ranking").innerText = count;
