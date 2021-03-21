@@ -18,9 +18,9 @@
   <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-firestore.js"></script>
   <script src="/js/config.js"></script>
   <script>
-  console.log("running...");
+  //console.log("running...");
   var msgs;
-  var count;
+  var count = 0;
   var db = firebase.firestore();
   /*console.log(db.collection("chatroom"));
   console.log(db.collection("chatroom").doc("room1"));
@@ -39,6 +39,8 @@
       //console.log(b.data.msg);
       msgs += b.data.msg;
     });
+    console.log(msgs);
+    console.log(msgs.length);
     count = msgs.length;
   });
 
