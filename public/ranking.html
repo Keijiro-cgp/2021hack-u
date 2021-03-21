@@ -27,7 +27,7 @@
   console.log(db.collection("chatroom"));
   console.log(db.collection("chatroom").doc("room1"));
   console.log(db.collection("chatroom").doc("room1").collection("messages"));
-  db.collection("chatroom").document("room1").collection("messages").get()
+  db.collection("chatroom").doc("room1").collection("messages").get()
   .then((querySnapshot) => {
     console.log("Now: querySnapshot");
     var buff = [];
