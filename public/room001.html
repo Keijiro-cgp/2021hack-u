@@ -7,11 +7,10 @@
   <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
   <style>
-  #chatlog{ width:370px; height:500px; border:5px solid black; overflow-y:scroll; }
+  #chatlog{ width:800px; height:500px; border:5px solid black; overflow-y:scroll; }
   #pleaselogin{padding: 10px;}
-  #uname{ width:80px; float:left; margin-right:10px; padding-top:5px; text-align:center}
-  #msg{ width:330px; height:30px; margin-right:10px; font-size:12pt;}
-  #sbmt{ width:100px; height:30px; }
+  #uname{ width:80px; margin-right:10px; padding-top:5px; text-align:center}
+  #msg{ width:600px; height:50px; margin-right:480px; font-size:12pt;}
   #counter{ width: 330px; height: 30px; margin-right: 10px; font-size: 12pt;}
   </style>
 </head>
@@ -57,7 +56,7 @@ loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
 </script -->
 
 <!--トークルームロゴ-->
-<div class="talkroom1" style="position:relative; top:0px; left:250px">
+<div class="talkroom1" style="position:relative; top:0px; left:300px">
   <img src="talkroom.png" alt="トークルーム" width="450px" height="190px">
 </div>
 
@@ -67,16 +66,18 @@ loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
 </div>
   
 <!-- 発言が表示される領域 -->
-<ul id="chatlog" style="position:relative; top:10px; left:280px"></ul>
+<ul id="chatlog" style="position:relative; top:10px; left:330px"></ul>
 
 <!--ログイン-->
 <div id="pleaselogin" class="hide" style="position:absolute; top:130px">
   <a href="/db/firestore3/login.html"><img src="login.png" alt="ログイン" width="180px" height="100px"></a>
 </div>
   
+<!--文章打つところ-->
 <form id="form1" class="hide">
   <div id="uname"></div>
-  <input type="text" id="msg"><button type="button" id="sbmt">送信</button>
+  <input type="text" id="msg" style="position:relative; left:500px">
+  <input type="image" src="send.png" id="sbmt" width="80px" height="80px">
   <div id="counter"></div>
 </form>
 
