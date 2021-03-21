@@ -7,13 +7,12 @@
   <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
   <style>
-  #chatlog{ width:500px; height:300px; border:1px solid gray; overflow-y:scroll; }
-  #pleaselogin{ width: 520px; border: 1px solid gray; padding: 10px; background-color: lightgrey; }
+  #chatlog{ width:370px; height:500px; border:5px solid black; overflow-y:scroll; }
+  #pleaselogin{padding: 10px;}
   #uname{ width:80px; float:left; margin-right:10px; padding-top:5px; text-align:center}
   #msg{ width:330px; height:30px; margin-right:10px; font-size:12pt;}
   #sbmt{ width:100px; height:30px; }
   #counter{ width: 330px; height: 30px; margin-right: 10px; font-size: 12pt;}
-  .hide{display: :none}
   </style>
 </head>
 <body>
@@ -57,19 +56,24 @@ loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
 });
 </script -->
 
-<h1>トークルーム１</h1>
-<div id="return">
-  <a href="/index.html">戻る</a>
+<!--トークルームロゴ-->
+<div class="talkroom1" style="position:relative; top:0px; left:250px">
+  <img src="talkroom.png" alt="トークルーム" width="450px" height="190px">
 </div>
 
+<!--戻るボタン-->
+<div class="return" style="position:absolute; top:0px">
+  <a href="/back.png"><img src="back.png" alt="戻る" width="150px" height="150px"></a>
+</div>
+  
 <!-- 発言が表示される領域 -->
-<ul id="chatlog"></ul>
+<ul id="chatlog" style="position:relative; top:10px; left:280px"></ul>
 
-<!-- 入力フォーム -->
-<div id="pleaselogin" class="hide">
-  ※チャットへの書き込みは<a href="/db/firestore3/login.html">ログイン</a>が必要です。
+<!--ログイン-->
+<div id="pleaselogin" class="hide" style="position:absolute; top:130px">
+  <a href="/db/firestore3/login.html"><img src="login.png" alt="ログイン" width="180px" height="100px"></a>
 </div>
-
+  
 <form id="form1" class="hide">
   <div id="uname"></div>
   <input type="text" id="msg"><button type="button" id="sbmt">送信</button>
