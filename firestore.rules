@@ -5,5 +5,13 @@ service cloud.firestore {
       allow read:  if true;
       allow write: if request.auth.uid != null;
     }
+    match /chatroom/room2/messages/{document} {
+      allow read:  if true;
+      allow write: if request.auth.uid != null;
+    }
+    match /chatroom/room3/messages/{document} {
+      allow read:  if true;
+      allow write: if request.auth.uid != null;
+    }
   }
 }
