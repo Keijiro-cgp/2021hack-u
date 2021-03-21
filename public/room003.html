@@ -16,47 +16,13 @@
 </head>
 <body>
 
-  <!-- script>
-  document.addEventListener('DOMContentLoaded', function() {
-  const loadEl = document.querySelector('#load');
-  // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-  // // The Firebase SDK is initialized and available here!
-  //
-  // firebase.auth().onAuthStateChanged(user => { });
-  // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-  // firebase.firestore().doc('/foo/bar').get().then(() => { });
-  // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-  // firebase.messaging().requestPermission().then(() => { });
-  // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-  // firebase.analytics(); // call to activate
-  // firebase.analytics().logEvent('tutorial_completed');
-  // firebase.performance(); // call to activate
-  //
-  // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
-  try {
-  let app = firebase.app();
-  let features = [
-  'auth',
-  'database',
-  'firestore',
-  'functions',
-  'messaging',
-  'storage',
-  'analytics',
-  'remoteConfig',
-  'performance',
-  ].filter(feature => typeof app[feature] === 'function');
-  loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-} catch (e) {
-console.error(e);
-loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-}
-});
-</script -->
+<!--triangle-->
+<div class="triangle" style="position:absolute; top:0px; right:0px">
+  <img src="black_triangle2.png" alt="△" width="300" height="300">
+</div>
 
 <!--トークルームロゴ-->
-<div class="talkroom1" style="position:relative; top:0px; left:300px">
+<div class="talkroom1" style="position:relative; top:0px; left:480px">
   <img src="talkroom.png" alt="トークルーム" width="450px" height="190px">
 </div>
 
@@ -66,7 +32,7 @@ loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
 </div>
 
 <!-- 発言が表示される領域 -->
-<ul id="chatlog" style="position:relative; top:10px; left:330px"></ul>
+<ul id="chatlog" style="position:relative; top:10px; left:510px"></ul>
 
 <!--ログイン-->
 <div id="pleaselogin" class="hide" style="position:absolute; top:130px">
