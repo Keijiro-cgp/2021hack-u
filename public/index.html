@@ -68,7 +68,7 @@
 </div>
 
 <div class="logout" id="logout" style="position:absolute; top:670px; left:1500px">
-  <img src="logout.png" alt="logout" width="470" height="230">
+  <img src="logout.png" alt="logout" width="235" height="115">
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
@@ -77,13 +77,17 @@
 <script src="/js/config.js"></script>
 <script>
   document.getElementById("logout").onclick = function() {
-    firebase.auth().onAuthStateChanged((user) => {
-      firebase.auth().signOut().then(()=>{
-        console.log("ログアウトしました");
-      }).catch((error) => {
-        console.log("ログアウト時にエラーが発生しました");
+    if(window.confirm("ログアウトしてもよろしいですか？")) {
+      firebase.auth().onAuthStateChanged((user) => {
+        firebase.auth().signOut().then(()=>{
+          console.log("ログアウトしました");
+        }).catch((error) => {
+          console.log("ログアウト時にエラーが発生しました");
+        })
       })
-    })
+    } else {
+      window.alert("ログアウトをキャンセルしました");
+    }
   }
 </script>
 </body>
