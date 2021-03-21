@@ -25,14 +25,13 @@
   /*console.log(db.collection("chatroom"));
   console.log(db.collection("chatroom").doc("room1"));
   console.log(db.collection("chatroom").doc("room1").collection("messages"));*/
-  db.collection("chatroom").doc("room1").collection("messages").get()
+  db.collection("chatroom").doc("room1").collection("messages").where("msg", "!=", null)
   .then((querySnapshot) => {
     //console.log("Now: querySnapshot");
     var buff = [];
     querySnapshot.forEach((doc) => {
       //console.log("Now: forEach((doc))");
       var data = doc.data();
-      if(data.exists)
       buff.push({data});
     });
     buff.forEach((b) => {
