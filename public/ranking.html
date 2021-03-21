@@ -10,38 +10,53 @@
 
   <h1>ランキング</h1>
 
-  <!-- 発言が表示される領域 -->
-  <div id="ranking"></div>
-
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
   <script src="/js/config.js"></script>
+  <div id="ranking_area">
+    <div id="room1_count"></div>
+    <div id="room2_count"></div>
+    <div id="room3_count"></div>
+  </div>
   <script>
   //console.log("running...");
-  var all_msgs = "";
-  var count = 0;
+
   var db = firebase.firestore();
-  db.collection("chatroom").doc("room1").collection("messages").where("msg", "!=", null)
-  .get().then((querySnapshot) => {
-    //console.log("Now: querySnapshot");
-    var buff = [];
-    querySnapshot.forEach((doc) => {
-      //console.log("Now: forEach((doc))");
-      var data = doc.data();
-      buff.push({data});
-    });
-    buff.forEach((b) => {
-      //console.log("Now: forEach((buff, b))");
-      //console.log(b.data.msg);
-      //console.log(b);
-      all_msgs += b.data.msg;
-    });
-    //console.log(all_msgs);
-    //console.log(all_msgs.length);
-    count = all_msgs.length;
-    document.getElementById("ranking").innerText = count;
+  var ranking_doc = document.getElementById("ranking_area");
+  var count_list = [];
+  db.collection("chatroom").forEach((doc) => {
+    count_list.push(Msg_counter(doc.id));
   });
+  console.log(count_list)
+
+  function Msg_counter(room) {
+    var all_msgs = "";
+    var count = 0;
+    db.collection("chatroom").doc(room).collection("messages").where("msg", "!=", null)
+    .get().then((querySnapshot) => {
+      //console.log("Now: querySnapshot");
+      var buff = [];
+      querySnapshot.forEach((doc) => {
+        //console.log("Now: forEach((doc))");
+        var data = doc.data();
+        buff.push({data});
+      });
+      buff.forEach((b) => {
+        //console.log("Now: forEach((buff, b))");
+        //console.log(b.data.msg);
+        //console.log(b);
+        all_msgs += b.data.msg;
+      });
+      //console.log(all_msgs);
+      //console.log(all_msgs.length);
+      count = all_msgs.length;
+      document.getElementById("ranking").innerText = count;
+    });
+    return count;
+  }
+
+
 
 </script>
 </body>
