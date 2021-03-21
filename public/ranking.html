@@ -22,8 +22,8 @@
   var msgs;
   var count = 0;
   firebase.firestore().settings({
-    ignoreUndefinedProperties: true;
-  })
+    ignoreUndefinedProperties: true,
+  });
   var db = firebase.firestore();
   /*console.log(db.collection("chatroom"));
   console.log(db.collection("chatroom").doc("room1"));
