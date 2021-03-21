@@ -19,7 +19,7 @@
   <script src="/js/config.js"></script>
   <script>
   console.log("running...");
-  var count;
+  var count = "";
   var db;
   console.log(
   db = firebase.firestore()
@@ -32,12 +32,12 @@
     console.log("Now: querySnapshot");
     var buff = [];
     querySnapshot.forEach((doc) => {
-      console.log("Now: forEach((doc))");
+      //console.log("Now: forEach((doc))");
       var data = doc.data();
       buff.push({data});
     });
     buff.forEach((b) => {
-      console.log("Now: forEach((buff, b))");
+      //console.log("Now: forEach((buff, b))");
       console.log(b.data.msg);
       count += b.data.msg;
     });
