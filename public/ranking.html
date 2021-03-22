@@ -78,7 +78,7 @@
     var n = 1;
     snapshot.forEach((doc) => {
       var target_area = document.getElementById("1-" + n);
-      textarea.innerText = doc.id + " : " + doc.value + "pt";
+      target_area.innerText = doc.id + " : " + doc.value + "pt";
       n++;
     });
   })
