@@ -146,8 +146,10 @@ var Chat = {
     var v = 0;
     this.countRef.get().then((doc) => {
       v = doc.data.value;
+      console.log("データベース内：" + v);
     });
     this.countRef.set({
+      console.log("クエリ内：" + Array.from(str).length);
       value : v + Array.from(str).length
     });
   },
