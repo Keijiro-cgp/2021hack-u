@@ -59,9 +59,9 @@
   <img src="fabicyan.gif" alt="チャッター君" width="400px" height="auto">
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
 <script src="">
 
 </script>
@@ -97,7 +97,7 @@ var Chat = {
     this.db = firebase.firestore();
     this.messagesRef = this.db.collection("chatroom").doc("room1").collection("messages");
     this.countRef = this.db.collection("count").doc("room1");
-    
+
     //---------------------
     // 同期処理
     //---------------------
