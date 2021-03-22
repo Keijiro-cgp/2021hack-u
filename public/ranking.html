@@ -43,7 +43,8 @@
   });
   for(let i = 0; i < count_list.length; i++) {
     for(let j = count_list.length; j > 0; j--) {
-      if((var c = count_list[i]) < count_list[j]) {
+      if(count_list[i] < count_list[j]) {
+        var c = count_list[i];
         count_list[i] = count_list[j];
         count_list[j] = c;
         var r = room_rank[i];
