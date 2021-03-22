@@ -146,7 +146,7 @@ var Chat = {
     //文字数をカウント
     var v = 0;
     this.countRef.get().then((doc) => {
-      v = doc.data.value;
+      v = doc.data().value;
       console.log("データベース内：" + v);
       this.countRef.set({
         value : v + Array.from(str).length
