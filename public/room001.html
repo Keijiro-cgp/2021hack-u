@@ -150,9 +150,9 @@ var Chat = {
       console.log("データベース内：" + v);
     });
     this.countRef.set({
-      console.log("クエリ内：" + Array.from(str).length);
       value : v + Array.from(str).length;
     });
+    console.log("クエリ内：" + Array.from(str).length);
   },
 
   /**
