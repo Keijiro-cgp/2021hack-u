@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chates</title>
+  <title>ChatesRanking</title>
+  <link rel="icon" type="image/png" href="fabicon.png">
   <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 </head>
 <body>
@@ -14,10 +15,15 @@
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
   <script src="/js/config.js"></script>
+
+  <div class="return" style="position:absolute; top:0px">
+    <a href="/index.html"><img src="back.png" alt="戻る" width="150px" height="150px"></a>
+  </div>
+
   <div id="ranking_area">
-    <div id="room1_count"></div>
-    <div id="room2_count"></div>
-    <div id="room3_count"></div>
+    <div id="#1"></div>
+    <div id="#2"></div>
+    <div id="#3"></div>
   </div>
   <script>
   //console.log("running...");
@@ -25,12 +31,36 @@
   var db = firebase.firestore();
   var ranking_doc = document.getElementById("ranking_area");
   var count_list = [];
+  var room_rank = [];
   db.collection("chatroom").get().then((querySnapshot) => {
+    var n = 0;
     querySnapshot.forEach((doc) => {
       count_list.push(Msg_counter(doc.id));
+      room_rank.push(n);
+      n++
     });
     console.log(count_list)
   });
+  for(let i = 0; i < count_list.length; i++) {
+    for(let j = count_list.length; j > 0; j--) {
+      if((var c = count_list[i]) < count_list[j]) {
+        count_list[i] = count_list[j];
+        count_list[j] = c;
+        var r = room_rank[i];
+        room_rank[i] = room_rank[j];
+        room_rank[j] = r;
+      }
+    }
+  }
+  var n = 1;
+  room_rank.forEach((room_num) => {
+    var insert_pos = document.getElementById("#" + n);
+    var new_element = document.createElement("p");
+    new_element.innerText = "グループ" + room_num + " :" + count_list[n];
+    insert_pos.appendChild(new_element);
+    n++;
+  });
+
 
   function Msg_counter(room) {
     var all_msgs = "";
@@ -52,8 +82,8 @@
       });
       //console.log(all_msgs);
       //console.log(all_msgs.length);
-      count = all_msgs.length;
-      document.getElementById(room + "_count").innerText = room + " : " + count;
+      count = Array.from(all_msgs).length;
+      //document.getElementById(room + "_count").innerText = room + " : " + count;
     });
     return count;
   }
