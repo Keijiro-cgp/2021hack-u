@@ -90,10 +90,28 @@
     var n = 1;
     snapshot.forEach((doc) => {
       var target_area = document.getElementById("1-" + n);
-      target_area.innerText = doc.id + " : " + doc.data().value + "pt";
+      target_area.innerText = convert_id(oc.id) + " : " + doc.data().value + "pt";
       n++;
     });
   })
+
+  function convert_id(id) {
+    switch (id) {
+      case "room1":
+        return "グループ１";
+        [break;]
+      case "room2":
+        return "グループ２";
+        [break;]
+      case "room3":
+        return "グループ３";
+        [break;]
+      [default:
+        return "unkown";
+        [break;]]
+    }
+  }
+
 </script>
 </body>
 </html>
