@@ -90,7 +90,7 @@
     var n = 1;
     snapshot.forEach((doc) => {
       var target_area = document.getElementById("1-" + n);
-      target_area.innerText = convert_id(oc.id) + " : " + doc.data().value + "pt";
+      target_area.innerText = convert_id(doc.id) + " : " + doc.data().value + "pt";
       n++;
     });
   })
