@@ -143,8 +143,12 @@ var Chat = {
       console.log(`追加に失敗しました (${error})`);
     });
     //文字数をカウント
+    var v = 0;
+    this.countRef.get().then((doc) => {
+      v = doc.data.value;
+    });
     this.countRef.set({
-      value: firebase.firestore.FieldValue.increment(Array.from(str).length)
+      value : v + Array.from(str).length
     });
   },
 

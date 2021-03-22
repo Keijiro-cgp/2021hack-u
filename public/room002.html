@@ -84,6 +84,7 @@ var Chat = {
   * 初期処理
   **/
   init: () => {
+    this.firebase = firebase;
     this.db = firebase.firestore();
     this.messagesRef = this.db.collection("chatroom").doc("room2").collection("messages");
     this.countRef = this.db.collection("count").doc("room2");
@@ -143,8 +144,12 @@ var Chat = {
       console.log(`追加に失敗しました (${error})`);
     });
     //文字数をカウント
+    var v = 0;
+    this.countRef.get().then((doc) => {
+      v = doc.data.value;
+    });
     this.countRef.set({
-      value: firebase.firestore.FieldValue.increment(Array.from(str).length)
+      value : v + Array.from(str).length
     });
   },
 
