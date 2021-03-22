@@ -87,8 +87,6 @@ var Chat = {
     this.db = firebase.firestore();
     this.messagesRef = this.db.collection("chatroom").doc("room1").collection("messages");
     this.countRef = this.db.collection("count").doc("room1");
-    var admin = require("firebase-admin");
-    var app = admin.initializeApp();
 
     //---------------------
     // 同期処理
