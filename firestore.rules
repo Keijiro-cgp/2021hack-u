@@ -19,7 +19,7 @@ service cloud.firestore {
     }
     match /count/room1/{document} {
       allow read:  if true;
-      allow write: if ture;
+      allow write: if true;
     }
     match /count/room2/{document} {
       allow read:  if true;
