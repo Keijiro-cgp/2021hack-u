@@ -87,13 +87,13 @@ var Chat = {
   * 初期処理
   **/
   init: () => {
-    const firebase = require("firebase-admin");
-    const serviceAccount = require("/api-key.json");
-
-    firebase.initializeApp({
-      credential: firebase.credential.cert(serviceAccount)
+    const admin = require("firebase-admin");
+    const serviceAccount = require("/db/api-key.json");
+    this.admin = admin;
+    this.admin.initializeApp({
+      credential: firebase.credential.cert(serviceAccount),
+      databaseURL: "https://hack-u2.firebaseio.com"
     })
-
     this.db = firebase.firestore();
     this.messagesRef = this.db.collection("chatroom").doc("room1").collection("messages");
     this.countRef = this.db.collection("count").doc("room1");
