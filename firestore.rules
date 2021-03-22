@@ -15,19 +15,19 @@ service cloud.firestore {
     }
     match /chatroom/room3/messages/{document} {
       allow read:  if true;
-      allow write: if request.auth.uid != null;
+      allow write: if true;
     }
     match /count/room1/{document} {
       allow read:  if true;
-      allow write: if request.auth.uid != null;
+      allow write: if ture;
     }
     match /count/room2/{document} {
       allow read:  if true;
-      allow write: if request.auth.uid != null;
+      allow write: if true;
     }
     match /count/room3/{document} {
       allow read:  if true;
-      allow write: if request.auth.uid != null;
+      allow write: if true;
     }
   }
 }
