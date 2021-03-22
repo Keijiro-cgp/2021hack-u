@@ -51,14 +51,14 @@
 <div class="member" style="position:absolute; top:260px">
   <img src="participant.png" alt="メンバー" width="280px" height="130px">
 </div>
-  
+
 <!--チャッター君GIF-->
 <div class="gif" style="position:absolute; top:450px; left:1450px">
   <img src="fabicyan.gif" alt="チャッター君" width="400px" height="auto">
-</div>  
+</div>
 
-<div id="uname" hidden></div>  
-  
+<div id="uname" hidden></div>
+
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-firestore.js"></script>
@@ -86,6 +86,7 @@ var Chat = {
   init: () => {
     this.db = firebase.firestore();
     this.messagesRef = this.db.collection("chatroom").doc("room3").collection("messages");
+    this.countRef = this.db.collection("count").doc("room1");
 
     //---------------------
     // 同期処理
@@ -140,6 +141,10 @@ var Chat = {
     })
     .catch((error) => {
       console.log(`追加に失敗しました (${error})`);
+    });
+    //文字数をカウント
+    return countRef.update({
+      value: firebase.firestore.FieldValue.increment(Array.from(str).length)
     });
   },
 

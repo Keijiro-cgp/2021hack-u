@@ -43,12 +43,15 @@
   <div id="ranking_area1">
     <div id="#1" style="position:absolute; top:400px; left:150px">
       <img src="first.png" alt="一位" width="80px" height="auto">
+      <div id="1-1" style="position:absolute; left:240px"></div>
     </div>
     <div id="#2" style="position:absolute; top:600px; left:150px">
       <img src="second.png" alt="二位" width="80px" height="auto">
+      <div id="1-2" style="position:absolute; left:240px"></div>
     </div>
     <div id="#3" style="position:absolute; top:740px; left:150px">
       <img src="third.png" alt="三位" width="80px" height="auto">
+      <div id="1-3" style="position:absolute; left:240px"></div>
     </div>
   </div>
 
@@ -56,79 +59,29 @@
   <div id="ranking_area2">
     <div id="#1" style="position:absolute; top:400px; left:1140px">
       <img src="first.png" alt="一位" width="80px" height="auto">
+      <div id="2-1" style="position:absolute; left:240px"></div>
     </div>
     <div id="#2" style="position:absolute; top:600px; left:1140px">
       <img src="second.png" alt="二位" width="80px" height="auto">
+      <div id="2-2" style="position:absolute; left:240px"></div>
     </div>
     <div id="#3" style="position:absolute; top:740px; left:1140px">
       <img src="third.png" alt="三位" width="80px" height="auto">
+      <div id="2-3" style="position:absolute; left:240px"></div>
     </div>
   </div>
-  
-  <!--script>
+
+  <script>
   //console.log("running...");
-
   var db = firebase.firestore();
-  var ranking_doc = document.getElementById("ranking_area");
-  var count_list = [];
-  var room_rank = [];
-  db.collection("chatroom").get().then((querySnapshot) => {
-    var n = 0;
-    querySnapshot.forEach((doc) => {
-      count_list.push(Msg_counter(doc.id));
-      room_rank.push(n);
-      n++
+  db.collection("count").orderBy("value").onSnapshot( (snapshot) => {
+    var n = 1;
+    snapshot.forEach((doc) => {
+      var target_area = document.getElementById("1-" + n);
+      textarea.innerText = doc.id + " : " + doc.value + "pt";
+      n++;
     });
-    console.log(count_list)
-  });
-  for(let i = 0; i < count_list.length; i++) {
-    for(let j = count_list.length; j > 0; j--) {
-      if(count_list[i] < count_list[j]) {
-        var c = count_list[i];
-        count_list[i] = count_list[j];
-        count_list[j] = c;
-        var r = room_rank[i];
-        room_rank[i] = room_rank[j];
-        room_rank[j] = r;
-      }
-    }
-  }
-  var n = 1;
-  room_rank.forEach((room_num) => {
-    var insert_pos = document.getElementById("#" + n);
-    var new_element = document.createElement("p");
-    new_element.innerText = "グループ" + room_num + " :" + count_list[n];
-    insert_pos.appendChild(new_element);
-    n++;
-  });
-
-
-  function Msg_counter(room) {
-    var all_msgs = "";
-    var count = 0;
-    db.collection("chatroom").doc(room).collection("messages").where("msg", "!=", null)
-    .get().then((querySnapshot) => {
-      //console.log("Now: querySnapshot");
-      var buff = [];
-      querySnapshot.forEach((doc) => {
-        //console.log("Now: forEach((doc))");
-        var data = doc.data();
-        buff.push({data});
-      });
-      buff.forEach((b) => {
-        //console.log("Now: forEach((buff, b))");
-        //console.log(b.data.msg);
-        //console.log(b);
-        all_msgs += b.data.msg;
-      });
-      //console.log(all_msgs);
-      //console.log(all_msgs.length);
-      count = Array.from(all_msgs).length;
-      //document.getElementById(room + "_count").innerText = room + " : " + count;
-    });
-    return count;
-  }
-
-</script-->
+  })
+</script>
 </body>
 </html>
