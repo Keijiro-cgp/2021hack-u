@@ -87,14 +87,8 @@ var Chat = {
   * 初期処理
   **/
   init: () => {
-    const admin = require("firebase-admin");
-    const serviceAccount = require("/db/api-key.json");
-    this.admin = admin;
-    this.admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      databaseURL: "https://hack-u2.firebaseio.com"
-    })
-    this.db = adimn.firestore();
+    this.firebase = firebase;
+    this.db = firebase.firestore();
     this.messagesRef = this.db.collection("chatroom").doc("room1").collection("messages");
     this.countRef = this.db.collection("count").doc("room1");
 
@@ -153,9 +147,13 @@ var Chat = {
       console.log(`追加に失敗しました (${error})`);
     });
     //文字数をカウント
-    this.countRef.update({
-      value: this.admin.firestore.FieldValue.increment(Array.from(str).length)
+    var v = 0;
+    this.countRef.get().then((doc) => {
+      v = doc.data.value;
     });
+    this.countRef.set({
+      value : v + Array.
+    })
   },
 
   /**
