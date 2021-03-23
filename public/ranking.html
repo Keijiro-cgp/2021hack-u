@@ -81,19 +81,23 @@
     <div id="#1" style="position:absolute; top:400px; left:1140px">
       <img src="first.png" alt="一位" width="80px" height="auto">
       <div id="2-1" style="position:absolute; left:240px"></div>
+      <div id="2-1pt" class="score" style="position:absolute; width: 600px; top: 100px; left: 400px"></div>
     </div>
     <div id="#2" style="position:absolute; top:600px; left:1140px">
       <img src="second.png" alt="二位" width="80px" height="auto">
       <div id="2-2" style="position:absolute; left:240px"></div>
+      <div id="2-2pt" class="score" style="position:absolute; width: 600px; top: 100px; left: 400px"></div>
     </div>
     <div id="#3" style="position:absolute; top:740px; left:1140px">
       <img src="third.png" alt="三位" width="80px" height="auto">
       <div id="2-3" style="position:absolute; left:240px"></div>
+      <div id="2-3pt" class="score" style="position:absolute; width: 600px; top: 100px; left: 400px"></div>
     </div>
   </div>
 
   <script>
   //console.log("running...");
+  //文字数ランキング
   var db = firebase.firestore();
   db.collection("count").orderBy("value", "desc").onSnapshot( (snapshot) => {
     var n = 1;
@@ -123,6 +127,45 @@
     }
   }
 
+  //活発度ランキング
+  var now = new Date();
+  var hour = now.getHours();
+  var minute = now.getMinutes();
+  var time_area_now = convert_time(hours, minute);
+  var time_area_before = convert_time(hours, minute - 10);
+  var rank = [1, 2, 3];
+  var counts = [0, 0, 0];
+  var raito = 1 / (minute - (minute / 10) * 10);
+  //それぞれの時間帯別文字数を取得
+  for(let i = 1; i <= 3; i++) {
+    var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
+    var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
+    counts[i] = target_doc.data().count * raito + before_doc.data().count * (1 - raito);
+  }
+
+  for(let i = 1; i <= 3; i++) {
+    for(j = 3; j >= 1; j--) {
+      if(counts[i] < counts[j]) {
+        var c = counts[i], r = rank[i];
+        counts[i] = counts[j];
+        counts[j] = c;
+        rank[i] = rank[j];
+        rank[j] = r;
+      }
+    }
+  }
+
+  for(let i = 1; i <= 3; i++) {
+    var target_area = document.getElementById("2-" + 1);
+    target_area.innerText = convert_id("room" + rank[i]);
+    target_area = document.getElementById("2-" + i + "pt");
+    target_area.innerText = counts[i] + "pt";
+  }
+
+  function convert_time(hour, minute) {
+    var n = parseInt(minute / 10);
+    return hour + ":" + n * 10;
+  }
 </script>
 </body>
 </html>
