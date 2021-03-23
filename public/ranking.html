@@ -159,7 +159,7 @@
     var target_area = document.getElementById("2-" + 1);
     target_area.innerText = convert_id("room" + rank[i]);
     target_area = document.getElementById("2-" + i + "pt");
-    target_area.innerText = counts[i] + "pt";
+    target_area.innerText = parseInt(counts[i]) + "pt";
   }
 
   function convert_time(hour, minute) {
