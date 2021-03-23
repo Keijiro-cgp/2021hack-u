@@ -140,23 +140,25 @@
   //それぞれの時間帯別文字数を取得
   async function get_all_count() {
     console.log("2 get_all_count: start");
-      for(let i = 1; i <= 3; i++) {
-        await get_now_and_before_count(i);
-      }
+    for(let i = 1; i <= 3; i++) {
+      await get_now_and_before_count(i);
+    }
     console.log("2 get_all_count: finish");
   }
 
   async function get_now_and_before_count(i) {
     console.log("3 get_now_and_before_count: start");
-    var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
-    var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
-    target_doc.get().then((doc) => {
-      counts[i] = doc.data().count * raito
-      console.log(doc.data().count);
-      before_doc.get().then((doc) => {
-        counts[i] += doc.data().count * (1 - raito)
+    return new Promise(resolve => {
+      var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
+      var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
+      target_doc.get().then((doc) => {
+        counts[i] = doc.data().count * raito
         console.log(doc.data().count);
-        console.log("3 get_now_and_before_count: finish");
+        before_doc.get().then((doc) => {
+          counts[i] += doc.data().count * (1 - raito)
+          console.log(doc.data().count);
+          console.log("3 get_now_and_before_count: finish");
+        });
       });
     });
   }
