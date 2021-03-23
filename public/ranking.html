@@ -168,7 +168,7 @@
     console.log("4 sort_rooms: start");
     console.log("counts: " + counts);
     for(let i = 0; i < 3; i++) {
-      for(j = 2; j >= 0; j--) {
+      for(j = 1; j < 3; j++) {
         await compare_rooms(i, j);
       }
     }
