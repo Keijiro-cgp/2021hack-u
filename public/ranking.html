@@ -136,7 +136,7 @@
   var rank = [1, 2, 3];
   var counts = [0, 0, 0];
   var raito = 1 / (minute - (minute / 10) * 10);
-
+  console.log("raito; " + raito);
   //それぞれの時間帯別文字数を取得
   async function get_all_count() {
     console.log("2 get_all_count: start");
@@ -169,7 +169,7 @@
     console.log("rank: " + rank);
     console.log("counts: " + counts);
     for(let i = 0; i < 3; i++) {
-      for(j = 3; j >= 0; j--) {
+      for(j = 2; j >= 0; j--) {
         await compare_rooms(i, j);
       }
     }
@@ -194,7 +194,7 @@
       target_area.innerText = convert_id("room" + rank[i]);
       target_area = document.getElementById("2-" + (i + 1) + "pt");
       console.log(counts[i]);
-      target_area.innerText = (Math.round(counts[i])).toString() + "pt";
+      target_area.innerText = (Math.round(counts[i])) + "pt";
     }
     console.log("6 write_text: finish");
   }
