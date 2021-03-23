@@ -7,21 +7,21 @@
   <link rel="icon" type="image/png" href="fabicon.png">
   <script defer src="/__/firebase/init.js?useEmulator=true"></script>
   <style>
-    @font-face {
-      font-family: "nicokaku";
-      src: url(/font/nicokaku_v1.woff) format("woff"),
-           url(/font/nicokaku_v1.ttf) format("truetype");
-    }
+  @font-face {
+    font-family: "nicokaku";
+    src: url(/font/nicokaku_v1.woff) format("woff"),
+    url(/font/nicokaku_v1.ttf) format("truetype");
+  }
 
-    .text {
-      font-size: 60px;
-      font-family: "nicokaku";
-    }
+  .text {
+    font-size: 60px;
+    font-family: "nicokaku";
+  }
 
-    .score {
-      font-size: 40px;
-      font-family: "nicokaku";
-    }
+  .score {
+    font-size: 40px;
+    font-family: "nicokaku";
+  }
 
   </style>
 </head>
@@ -113,17 +113,17 @@
   function convert_id(id) {
     switch (id) {
       case "room1":
-        return "グループ１";
-        break;
+      return "グループ１";
+      break;
       case "room2":
-        return "グループ２";
-        break;
+      return "グループ２";
+      break;
       case "room3":
-        return "グループ３";
-        break;
+      return "グループ３";
+      break;
       default:
-        return "unkown";
-        break;
+      return "unkown";
+      break;
     }
   }
 
@@ -137,39 +137,54 @@
   var counts = [0, 0, 0];
   var raito = 1 / (minute - (minute / 10) * 10);
   //それぞれの時間帯別文字数を取得
-  for(let i = 1; i <= 3; i++) {
-    var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
-    var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
-    target_doc.get().then((doc) => {
-      counts[i] = doc.data().count * raito
-      console.log(doc.data().count);
-    });
-    before_doc.get().then((doc) => {
-      counts[i] += doc.data().count * (1 - raito)
-      console.log(doc.data().count);
-    });
+  const get_now_count = async function() {
+    for(let i = 1; i <= 3; i++) {
+      var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
+      var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
+      target_doc.get().then((doc) => {
+        counts[i] = doc.data().count * raito
+        console.log(doc.data().count);
+      });
+      before_doc.get().then((doc) => {
+        counts[i] += doc.data().count * (1 - raito)
+        console.log(doc.data().count);
+      });
+    }
   }
-  console.log("rank: " + rank);
-  console.log("counts: " + counts);
-  for(let i = 0; i < 3; i++) {
-    for(j = 3; j >= 0; j--) {
-      if(counts[i] < counts[j]) {
-        var c = counts[i], r = rank[i];
-        counts[i] = counts[j];
-        counts[j] = c;
-        rank[i] = rank[j];
-        rank[j] = r;
+
+  const sort_room = async function() {
+    console.log("rank: " + rank);
+    console.log("counts: " + counts);
+    for(let i = 0; i < 3; i++) {
+      for(j = 3; j >= 0; j--) {
+        if(counts[i] < counts[j]) {
+          var c = counts[i], r = rank[i];
+          counts[i] = counts[j];
+          counts[j] = c;
+          rank[i] = rank[j];
+          rank[j] = r;
+        }
       }
     }
   }
 
-  for(let i = 0; i <= 2; i++) {
-    var target_area = document.getElementById("2-" + (i + 1));
-    target_area.innerText = convert_id("room" + rank[i]);
-    target_area = document.getElementById("2-" + (i + 1) + "pt");
-    console.log(counts[i])
-    target_area.innerText = (Math.round(counts[i])).toString() + "pt";
+  const write_text = async function() {
+    for(let i = 0; i <= 2; i++) {
+      var target_area = document.getElementById("2-" + (i + 1));
+      target_area.innerText = convert_id("room" + rank[i]);
+      target_area = document.getElementById("2-" + (i + 1) + "pt");
+      console.log(counts[i])
+      target_area.innerText = (Math.round(counts[i])).toString() + "pt";
+    }
   }
+
+  const processAll = async function() {
+    await get_now_count()
+    await sort_room()
+    await write_text()
+  }
+
+  processAll()
 
   function convert_time(hour, minute) {
     var n = parseInt(minute / 10);
