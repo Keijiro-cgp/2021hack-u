@@ -152,7 +152,7 @@
     }
   }
 
-  const sort_room = async function() {
+  async function sort_room() {
     console.log("rank: " + rank);
     console.log("counts: " + counts);
     for(let i = 0; i < 3; i++) {
@@ -168,20 +168,20 @@
     }
   }
 
-  const write_text = async function() {
+  async function write_text() {
     for(let i = 0; i <= 2; i++) {
       var target_area = document.getElementById("2-" + (i + 1));
       target_area.innerText = convert_id("room" + rank[i]);
       target_area = document.getElementById("2-" + (i + 1) + "pt");
-      console.log(counts[i])
+      console.log(counts[i]);
       target_area.innerText = (Math.round(counts[i])).toString() + "pt";
     }
   }
 
-  const processAll = async function() {
-    await get_now_count()
-    await sort_room()
-    await write_text()
+  async function processAll() {
+    await get_now_count();
+    await sort_room();
+    await write_text();
   }
 
   processAll()
