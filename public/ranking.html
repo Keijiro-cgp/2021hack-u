@@ -139,11 +139,11 @@
   //それぞれの時間帯別文字数を取得
   async function get_all_count() {
       for(let i = 1; i <= 3; i++) {
-        await get_now_and_before_count();
+        await get_now_and_before_count(i);
       }
   }
 
-  async function get_now_and_before_count() {
+  async function get_now_and_before_count(i) {
     var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
     var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
     target_doc.get().then((doc) => {
