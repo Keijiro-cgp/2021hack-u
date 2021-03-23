@@ -154,17 +154,13 @@ var Chat = {
       });
       //時間帯別集計
       var time_area = convert_time(now.getHours(), now.getSeconds());
+      console.log(time_area);
       this.countRef.collection("speed").doc(time_area).set({
         count: v + Array.from(str).length
       });
     });
     //console.log("クエリ内：" + Array.from(str).length);
   },
-
-  function convert_time(hour, second) {
-    var n = (second / 10).setInt();
-    return hour + ":" + n * 10;
-  }
 
   /**
   * 描画エリアにログを追加
@@ -247,6 +243,11 @@ function getStrTime(time){
     ("0" + t.getHours()      ).slice(-2) + ":" +
     ("0" + t.getMinutes()    ).slice(-2)
   );
+}
+
+function convert_time(hour, second) {
+  var n = (second / 10).setInt();
+  return hour + ":" + n * 10;
 }
 </script>
 </body>
