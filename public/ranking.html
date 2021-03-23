@@ -177,9 +177,10 @@
   }
 
   async function compare_rooms(i, j) {
-    console.log("5 compare_rooms");
+    console.log("5 compare_rooms: i=" + i + ", j=" + j);
     if(counts[i] < counts[j]) {
-      var c = counts[i], r = rank[i];
+      var c = counts[i];
+      var r = rank[i];
       counts[i] = counts[j];
       counts[j] = c;
       rank[i] = rank[j];
