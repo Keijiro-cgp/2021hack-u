@@ -136,14 +136,18 @@
   var rank = [1, 2, 3];
   var counts = [0, 0, 0];
   var raito = 1 / (minute - (minute / 10) * 10);
+
   //それぞれの時間帯別文字数を取得
   async function get_all_count() {
+    console.log("2 get_all_count: start");
       for(let i = 1; i <= 3; i++) {
         await get_now_and_before_count(i);
       }
+    console.log("2 get_all_count: finish");
   }
 
   async function get_now_and_before_count(i) {
+    console.log("3 get_now_and_before_count: start");
     var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
     var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
     target_doc.get().then((doc) => {
@@ -152,11 +156,13 @@
       before_doc.get().then((doc) => {
         counts[i] += doc.data().count * (1 - raito)
         console.log(doc.data().count);
+        console.log("3 get_now_and_before_count: finish");
       });
     });
   }
 
   async function sort_rooms() {
+    console.log("4 sort_rooms: start");
     console.log("rank: " + rank);
     console.log("counts: " + counts);
     for(let i = 0; i < 3; i++) {
@@ -164,9 +170,11 @@
         await compare_rooms(i, j);
       }
     }
+    console.log("4 sort_rooms: finish");
   }
 
   async function compare_rooms(i, j) {
+    console.log("5 compare_rooms");
     if(counts[i] < counts[j]) {
       var c = counts[i], r = rank[i];
       counts[i] = counts[j];
@@ -177,6 +185,7 @@
   }
 
   async function write_text() {
+    console.log("6 write_text: start");
     for(let i = 0; i <= 2; i++) {
       var target_area = document.getElementById("2-" + (i + 1));
       target_area.innerText = convert_id("room" + rank[i]);
@@ -184,12 +193,15 @@
       console.log(counts[i]);
       target_area.innerText = (Math.round(counts[i])).toString() + "pt";
     }
+    console.log("6 write_text: finish");
   }
 
   async function processAll() {
+    console.log("1 processAll: start");
     await get_all_count();
     await sort_rooms();
     await write_text();
+    console.log("1 processAll: finish")
   }
 
   processAll();
