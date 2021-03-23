@@ -137,34 +137,42 @@
   var counts = [0, 0, 0];
   var raito = 1 / (minute - (minute / 10) * 10);
   //それぞれの時間帯別文字数を取得
-  async function get_now_count() {
-    for(let i = 1; i <= 3; i++) {
-      var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
-      var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
-      target_doc.get().then((doc) => {
-        counts[i] = doc.data().count * raito
-        console.log(doc.data().count);
-      });
+  async function get_all_count() {
+      for(let i = 1; i <= 3; i++) {
+        await get_now_and_before_count();
+      }
+  }
+
+  async function get_now_and_before_count() {
+    var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
+    var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
+    target_doc.get().then((doc) => {
+      counts[i] = doc.data().count * raito
+      console.log(doc.data().count);
       before_doc.get().then((doc) => {
         counts[i] += doc.data().count * (1 - raito)
         console.log(doc.data().count);
       });
-    }
+    });
   }
 
-  async function sort_room() {
+  async function sort_rooms() {
     console.log("rank: " + rank);
     console.log("counts: " + counts);
     for(let i = 0; i < 3; i++) {
       for(j = 3; j >= 0; j--) {
-        if(counts[i] < counts[j]) {
-          var c = counts[i], r = rank[i];
-          counts[i] = counts[j];
-          counts[j] = c;
-          rank[i] = rank[j];
-          rank[j] = r;
-        }
+        await compare_rooms(i, j);
       }
+    }
+  }
+
+  async function compare_rooms(i, j) {
+    if(counts[i] < counts[j]) {
+      var c = counts[i], r = rank[i];
+      counts[i] = counts[j];
+      counts[j] = c;
+      rank[i] = rank[j];
+      rank[j] = r;
     }
   }
 
@@ -180,11 +188,11 @@
 
   async function processAll() {
     await get_now_count();
-    await sort_room();
+    await sort_rooms();
     await write_text();
   }
 
-  processAll()
+  processAll();
 
   function convert_time(hour, minute) {
     var n = parseInt(minute / 10);
