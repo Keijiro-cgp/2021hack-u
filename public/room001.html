@@ -130,6 +130,7 @@ var Chat = {
   * @param {string} str 送信内容
   **/
   sendLog: (str)=>{
+    var now = new Date();
     this.messagesRef.add({
       name: Chat.user.name,
       msg: str,
@@ -147,13 +148,23 @@ var Chat = {
     var v = 0;
     this.countRef.get().then((doc) => {
       v = doc.data().value;
-      console.log("データベース内：" + v);
+      //console.log("データベース内：" + v);
       this.countRef.set({
         value : v + Array.from(str).length
       });
+      //時間帯別集計
+      var time_area = convert_time(now.getHours(), now.getSeconds());
+      this.countRef.collection("speed").doc(time_area).set({
+        count: v + Array.from(str).length
+      });
     });
-    console.log("クエリ内：" + Array.from(str).length);
+    //console.log("クエリ内：" + Array.from(str).length);
   },
+
+  function convert_time(hour, second) {
+    var n = (second / 10).setInt();
+    return hour + ":" + n * 10;
+  }
 
   /**
   * 描画エリアにログを追加
