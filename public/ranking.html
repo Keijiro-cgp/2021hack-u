@@ -110,7 +110,7 @@
     var room_db = db.collection("count").doc("room" + i).collection("speed");
     room_db.set({
       "00:00": 0
-    })
+    });
   }
 
   function convert_id(id) {
