@@ -153,10 +153,10 @@ var Chat = {
         value : v + Array.from(str).length
       });
       //時間帯別集計
-      var time_area = convert_time(now.getHours(), now.getSeconds());
+      var time_area = convert_time(now.getHours(), now.getMinutes());
       console.log(time_area);
       this.countRef.collection("speed").doc(time_area).set({
-        count: v + Array.from(str).length
+        count: Array.from(str).length
       });
     });
     //console.log("クエリ内：" + Array.from(str).length);
@@ -245,8 +245,8 @@ function getStrTime(time){
   );
 }
 
-function convert_time(hour, second) {
-  var n = parseInt(second / 10);
+function convert_time(hour, minute) {
+  var n = parseInt(minute / 10);
   return hour + ":" + n * 10;
 }
 </script>
