@@ -158,6 +158,7 @@
           counts[i - 1] += doc.data().count * (1 - raito)
           console.log(doc.data().count);
           console.log("3 get_now_and_before_count: finish");
+          resolve();
         });
       });
     });
