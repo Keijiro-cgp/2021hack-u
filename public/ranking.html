@@ -80,18 +80,18 @@
   <div id="ranking_area2">
     <div id="#1" style="position:absolute; top:400px; left:1140px">
       <img src="first.png" alt="一位" width="80px" height="auto">
-      <div id="2-1" class="text" style="position:absolute; width: 600px; top: 10px; left: 240px; font-size: 80px"></div>
+      <div id="2-1" class="text" style="position:absolute; width: 600px; top: 10px; left: 120px; font-size: 80px"></div>
       <div id="2-1pt" class="score" style="position:absolute; width: 600px; top: 100px; left: 400px"></div>
     </div>
     <div id="#2" style="position:absolute; top:600px; left:1140px">
       <img src="second.png" alt="二位" width="80px" height="auto">
-      <div id="2-2" class="text" style="position:absolute; width: 600px; top: 0px; left: 240px"></div>
-      <div id="2-2pt" class="score" style="position:absolute; width: 600px; top: 100px; left: 400px"></div>
+      <div id="2-2" class="text" style="position:absolute; width: 600px; top: 0px; left: 120px"></div>
+      <div id="2-2pt" class="score" style="position:absolute; width: 600px; top: 60px; left: 400px"></div>
     </div>
     <div id="#3" style="position:absolute; top:740px; left:1140px">
       <img src="third.png" alt="三位" width="80px" height="auto">
-      <div id="2-3" class="text" style="position:absolute; width: 600px; top: 0px; left: 240px"></div>
-      <div id="2-3pt" class="score" style="position:absolute; width: 600px; top: 100px; left: 400px"></div>
+      <div id="2-3" class="text" style="position:absolute; width: 600px; top: 0px; left: 120px"></div>
+      <div id="2-3pt" class="score" style="position:absolute; width: 600px; top: 60px; left: 400px"></div>
     </div>
   </div>
 
@@ -162,7 +162,7 @@
   }
 
   for(let i = 0; i <= 2; i++) {
-    var target_area = document.getElementById("2-" + 1);
+    var target_area = document.getElementById("2-" + (i + 1));
     target_area.innerText = convert_id("room" + rank[i]);
     target_area = document.getElementById("2-" + (i + 1) + "pt");
     console.log(counts[i])
