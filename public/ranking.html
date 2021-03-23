@@ -165,7 +165,7 @@
     var target_area = document.getElementById("2-" + 1);
     target_area.innerText = convert_id("room" + rank[i]);
     target_area = document.getElementById("2-" + i + "pt");
-    target_area.innerText = Math.round(counts[i]) + "pt";
+    target_area.innerText = (Math.round(counts[i])).toString() + "pt";
   }
 
   function convert_time(hour, minute) {
