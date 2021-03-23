@@ -166,13 +166,13 @@
 
   async function sort_rooms() {
     console.log("4 sort_rooms: start");
-    console.log("rank: " + rank);
     console.log("counts: " + counts);
     for(let i = 0; i < 3; i++) {
       for(j = 2; j >= 0; j--) {
         await compare_rooms(i, j);
       }
     }
+    console.log("rank: " + rank);
     console.log("4 sort_rooms: finish");
   }
 
