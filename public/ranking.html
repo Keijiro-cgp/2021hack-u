@@ -147,7 +147,8 @@
       counts[i] += doc.data().count * (1 - raito)
     });
   }
-
+  console.log("rank: " + rank);
+  console.log("counts: " + counts);
   for(let i = 1; i <= 3; i++) {
     for(j = 3; j >= 1; j--) {
       if(counts[i] < counts[j]) {
@@ -160,7 +161,7 @@
     }
   }
 
-  for(let i = 1; i <= 3; i++) {
+  for(let i = 0; i <= 2; i++) {
     var target_area = document.getElementById("2-" + 1);
     target_area.innerText = convert_id("room" + rank[i]);
     target_area = document.getElementById("2-" + i + "pt");
