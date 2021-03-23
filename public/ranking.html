@@ -140,7 +140,12 @@
   for(let i = 1; i <= 3; i++) {
     var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
     var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
-    counts[i] = target_doc.data().count * raito + before_doc.data().count * (1 - raito);
+    target_doc.get().then((doc) => {
+      counts[i] = doc.data().count * raito
+    });
+    before_doc.get().then((doc) => {
+      counts[i] += doc.data().count * (1 - raito)
+    });
   }
 
   for(let i = 1; i <= 3; i++) {
