@@ -135,7 +135,7 @@
   var time_area_before = get_before_time(hour, minute);
   var rank = [1, 2, 3];
   var counts = [0, 0, 0];
-  var raito = 1 / (minute - (minute / 10) * 10);
+  var raito = (minute % 10) / 10;
   console.log("raito; " + raito);
   //それぞれの時間帯別文字数を取得
   async function get_all_count() {
@@ -152,10 +152,10 @@
       var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
       var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
       target_doc.get().then((doc) => {
-        counts[i - 1] = doc.data().count;
+        counts[i - 1] = doc.data().count * raito;
         console.log(doc.data().count);
         before_doc.get().then((doc) => {
-          counts[i - 1] += doc.data().count;
+          counts[i - 1] += doc.data().count * (1 - raito);
           console.log(doc.data().count);
           console.log("3 get_now_and_before_count: finish");
           resolve();
