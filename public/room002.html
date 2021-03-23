@@ -165,9 +165,12 @@ var Chat = {
       });
       //時間帯別集計
       var time_area = convert_time(now.getHours(), now.getMinutes());
-      console.log(time_area);
-      this.countRef.collection("speed").doc(time_area).set({
-        count: Array.from(str).length
+      var s = 0;
+      this.countRef.collection("speed").doc(time_area).get().then((doc) => {
+        s = doc.data().count;
+        this.countRef.collection("speed").doc(time_area).set({
+          count: s + Array.from(str).length
+        });
       });
     });
     console.log("クエリ内：" + Array.from(str).length);
