@@ -246,7 +246,7 @@ function getStrTime(time){
 }
 
 function convert_time(hour, second) {
-  var n = (second / 10).setInt();
+  var n = parseInt(second / 10);
   return hour + ":" + n * 10;
 }
 </script>
