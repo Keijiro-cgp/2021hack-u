@@ -211,7 +211,9 @@ var Chat = {
     let is_new = true;
     let size_li = 0;
     for(li_name in user_all) {
-      if(li_name == u_name) is_new = false;
+      if(li_name == u_name) {
+        is_new = false;
+      }
       size_li++;
     }
     console.log("u_name :" + u_name);
