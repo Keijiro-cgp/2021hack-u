@@ -210,22 +210,31 @@ var Chat = {
     let u_name = data.name;
     let is_new = true;
     let size_li = 0;
-    for(li_name in user_all) {
-      console.log(li_name + " - " + u_name);
-      if(li_name == u_name) {
-        is_new = false;
+    Promise.resolve().then(function() {
+      for(li_name in user_all) {
+        Promise.resolve().then(function() {
+          console.log(li_name + " - " + u_name);
+          if(li_name == u_name) {
+            is_new = false;
+          }
+          size_li++;
+          resolve();
+        });
       }
-      size_li++;
-    }
-    console.log("u_name :" + u_name);
-    if(is_new) {
-      user_all.push(u_name);
-      let user_li = document.createElement('li');
-      let u_list_doc = document.getElementById("member_list");
-      user_li.id = ++size_li;
-      user_li.appendChild(document.createTextNode(u_name));
-      u_list_doc.appendChild(user_li, u_list_doc.nextSibling);
-    }
+      resovle();
+    })
+    .then(function() {
+      console.log("u_name :" + u_name);
+      if(is_new) {
+        user_all.push(u_name);
+        let user_li = document.createElement('li');
+        let u_list_doc = document.getElementById("member_list");
+        user_li.id = ++size_li;
+        user_li.appendChild(document.createTextNode(u_name));
+        u_list_doc.appendChild(user_li, u_list_doc.nextSibling);
+      }
+      resolve();
+    });
   },
 
   /**
