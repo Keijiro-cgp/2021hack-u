@@ -213,16 +213,11 @@ var Chat = {
     var myPromise = Promise.resolve();
     myPromise = myPromise.then(func_1).then(func_3);
 
-    var func_1 = function() {
-      console.log("func_1: start");
-      return new Promise(function(resolve, reject) {
-        var myPromise = Promise.resolve();
-        for(li_name in user_all) {
-          myPromise = myPromise.then(func_2)
-        }
-        resolve();
-      })
+    for(li_name in user_all) {
+      myPromise = myPromise.then(func_2);
     }
+    myPromise.then(func_3);
+
     var func_2 = function() {
       console.log("func_2: start");
       return new Promise(function(resolve, reject) {
