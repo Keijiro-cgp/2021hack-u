@@ -219,8 +219,10 @@ var Chat = {
     const delete_same = () => {
       return new Promise(resolve => {
         var offset = user_all.indexOf(data.name);
-        while((var n = user_all.indexOf(data.name, offset + 1)) != -1) {
+        var n = user_all.indexOf(data.name, offset + 1);
+        while(n != -1) {
           user_all.splice(n, 1);
+          n = user_all.indexOf(data.name, offset + 1);
         }
       }
       resolve("resolved_2");
