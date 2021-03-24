@@ -124,7 +124,7 @@ var Chat = {
         else if ( change.type === 'removed' ) {
           Chat.removeLog(change.doc.id);
         }
-      });
+      })
     });
 
     //---------------------
@@ -206,44 +206,19 @@ var Chat = {
       document.getElementById("count_text").innerText = v + "pt";
     });
 
-    //新規ユーザーをユーザー欄に追加
-    let u_name = data.name;
-    let is_new = true;
-    let size_li = 0;
-    var myPromise = Promise.resolve();
+    //配列に名前を追加した後、被った名前を削除
+    new Promise(function (resolve, reject) {
+      if(user_all.indexOf(data.name) == -1) {
+        user_all.push(data.name);
+        reject();
+      }
+    }).then(function () => {
+      var offset = user_all.indexOf(data.name);
+      while((var n = user_all.indexOf(data.name, offset + 1)) != -1) {
+        user_all.splice(n, 1);
+      }
+    });
 
-    for(li_name in user_all) {
-      console.log("now: " + li_name);
-      myPromise = myPromise.then(func_2);
-    }
-    myPromise.then(func_3);
-
-    var func_2 = function() {
-      console.log("func_2: start");
-      return new Promise(function(resolve, reject) {
-        console.log(li_name + " - " + u_name);
-        if(li_name == u_name) {
-          is_new = false;
-        }
-        size_li++;
-        resolve();
-      })
-    }
-    var func_3 = function() {
-      console.log("func_3: start");
-      return new Promise(function(resolve, reject) {
-        console.log("u_name :" + u_name);
-        if(is_new) {
-          user_all.push(u_name);
-          let user_li = document.createElement('li');
-          let u_list_doc = document.getElementById("member_list");
-          user_li.id = ++size_li;
-          user_li.appendChild(document.createTextNode(u_name));
-          u_list_doc.appendChild(user_li, u_list_doc.nextSibling);
-        }
-        resolve();
-      })
-    }
   },
 
   /**
