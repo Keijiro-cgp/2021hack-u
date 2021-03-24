@@ -53,6 +53,8 @@
 <ul id="name"></ul>
 <div class="member" style="position:absolute; top:260px">
   <img src="participant.png" alt="メンバー" width="280px" height="130px">
+  <ul id="member_list">
+  </ul>
 </div>
 
 <!--bgmback-->
@@ -77,6 +79,9 @@
 <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
 <script src="/js/config.js"></script>
 <script>
+
+var user_all = [];
+
 /**
 * Chatオブジェクト
 **/
@@ -200,6 +205,23 @@ var Chat = {
       v = doc.data().value;
       document.getElementById("count_text").innerText = v + "pt";
     });
+
+    //新規ユーザーをユーザー欄に追加
+    let u_name = data.name;
+    let is_new = true;
+    let size_li = 0;
+    for(li_name in user_all) {
+      if(li_name == u_name) is_new = false;
+      size_li++;
+    }
+    if(is_new) {
+      user_all.push(u_name);
+      let user_li = document.createElement('li');
+      let u_list_doc = document.getElementById("member_list");
+      user_li.id = ++size_li;
+      user_li.appendChild(u_list_doc.createTextNode(u_name));
+      u_list_doc.insertBefore(user_li, u_list_doc.nextSibling);
+    }
   },
 
   /**
