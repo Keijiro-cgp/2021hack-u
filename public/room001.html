@@ -214,12 +214,13 @@ var Chat = {
       if(li_name == u_name) is_new = false;
       size_li++;
     }
+    console.log("u_name :" + u_name);
     if(is_new) {
       user_all.push(u_name);
       let user_li = document.createElement('li');
       let u_list_doc = document.getElementById("member_list");
       user_li.id = ++size_li;
-      user_li.appendChild(u_list_doc.createTextNode(u_name));
+      user_li.appendChild(document.createTextNode(u_name));
       u_list_doc.insertBefore(user_li, u_list_doc.nextSibling);
     }
   },
