@@ -210,10 +210,14 @@ var Chat = {
     let u_name = data.name;
     let is_new = true;
     let size_li = 0;
+    var myPromise = Promise.resolve();
+    myPromise = myPromise.then(func_1).then(func_3);
+
     var func_1 = function() {
       return new Promise(function(resolve, reject) {
+        var myPromise = Promise.resolve();
         for(li_name in user_all) {
-          ().then(func_2);
+          myPromise = myPromise.then(func_2)
         }
         resolve();
       })
@@ -242,7 +246,6 @@ var Chat = {
         resolve();
       })
     }
-    func_1().then(func_3);
   },
 
   /**
