@@ -206,18 +206,34 @@ var Chat = {
       document.getElementById("count_text").innerText = v + "pt";
     });
 
-    //配列に名前を追加した後、被った名前を削除
-    new Promise(function (resolve, reject) {
-      if(user_all.indexOf(data.name) == -1) {
-        user_all.push(data.name);
-        reject();
+    //配列に名前を追加した後、被った名前を削
+    const check_namelist = () => {
+      return new Promise(resolve => {
+        if(user_all.indexOf(data.name) == -1) {
+          user_all.push(data.name);
+          resolve("resolved_1");
+        }
+      });
+    }
+
+    const delete_same = () => {
+      return new Promise(resolve => {
+        var offset = user_all.indexOf(data.name);
+        while((var n = user_all.indexOf(data.name, offset + 1)) != -1) {
+          user_all.splice(n, 1);
+        }
       }
-    }).then(function () => {
-      var offset = user_all.indexOf(data.name);
-      while((var n = user_all.indexOf(data.name, offset + 1)) != -1) {
-        user_all.splice(n, 1);
-      }
-    });
+      resolve("resolved_2");
+    };
+
+    const asyncCall = async () => {
+      const result_1 = await check_namelist();
+      const result_2 = await delete_same();
+      console.log(result_1);
+      console.log(result_2);
+    }
+
+    asyncCall();
 
   },
 
