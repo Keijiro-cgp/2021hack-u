@@ -221,7 +221,7 @@ var Chat = {
       let u_list_doc = document.getElementById("member_list");
       user_li.id = ++size_li;
       user_li.appendChild(document.createTextNode(u_name));
-      u_list_doc.insertBefore(user_li, u_list_doc.nextSibling);
+      u_list_doc.appendChild(user_li, u_list_doc.nextSibling);
     }
   },
 
