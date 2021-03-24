@@ -214,6 +214,7 @@ var Chat = {
     myPromise = myPromise.then(func_1).then(func_3);
 
     var func_1 = function() {
+      console.log("func_1: start");
       return new Promise(function(resolve, reject) {
         var myPromise = Promise.resolve();
         for(li_name in user_all) {
@@ -223,6 +224,7 @@ var Chat = {
       })
     }
     var func_2 = function() {
+      console.log("func_2: start");
       return new Promise(function(resolve, reject) {
         console.log(li_name + " - " + u_name);
         if(li_name == u_name) {
@@ -233,6 +235,7 @@ var Chat = {
       })
     }
     var func_3 = function() {
+      console.log("func_3: start");
       return new Promise(function(resolve, reject) {
         console.log("u_name :" + u_name);
         if(is_new) {
