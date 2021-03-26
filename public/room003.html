@@ -161,9 +161,10 @@ var Chat = {
     this.countRef.get().then((doc) => {
       v = doc.data().value;
       console.log("データベース内：" + v);
-      document.getElementById("count_text").innerText = v + Array.from(str).length + "pt";
       this.countRef.set({
         value : v + Array.from(str).length
+      }).then((data) => {
+        document.getElementById("count_text").innerText = v + Array.from(str).length + "pt";
       });
       //時間帯別集計
       var time_area = convert_time(now.getHours(), now.getMinutes());
