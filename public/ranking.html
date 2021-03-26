@@ -141,31 +141,44 @@
   async function get_all_count() {
     console.log("2 get_all_count: start");
     for(let i = 1; i <= 3; i++) {
-      await get_now_and_before_count(get_now_and_before_document(i));
+      await get_now_and_before_count(i, get_now_count(i), get_before_count(i));
     }
     console.log("2 get_all_count: finish");
   }
 
-  async function get_now_and_before_document(i) {
-    console.log("2.5 get_now_and_before_document: start");
+  async function get_now_count(i) {
+    console.log("3-A get_now_count: start");
     return new Promise(resolve => {
       var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
-      var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
       target_doc.get().then((doc) => {
-        console.log(doc.data());
+        var n_count = doc.data().count;
+        console.log(n_count);
+        console.log("3-A get_now_count: finish");
+        resolve(n_count);
       })
-      console.log("2.5 get_now_and_before_document: finish");
-      resolve(target_doc, before_doc);
     })
   }
 
-  async function get_now_and_before_count(target_doc, before_doc) {
-    console.log("3 get_now_and_before_count: start");
+  async function get_before_count(i) {
+    console.log("3-B get_before_count: start");
+    return new Promise(resolve => {
+      var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
+      before_doc.get().then((doc) => {
+        var b_count = doc.data().count;
+        console.log(b_count);
+        console.log("3-B get_before_count: finish");
+        resolve(b_count);
+      })
+    })
+  }
+
+  async function get_now_and_before_count(i, target_data, before_data) {
+    console.log("3-C get_now_and_before_count: start");
     return new Promise(resolve => {
       //var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
       //var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
       //console.log("target_doc definesd: " + target_doc.data());
-      target_doc.get().then((doc) => {
+      /*target_doc.get().then((doc) => {
         counts[i - 1] = doc.data().count * raito;
         console.log(doc.data().count);
         before_doc.get().then((doc) => {
@@ -174,7 +187,9 @@
           console.log("3 get_now_and_before_count: finish");
           resolve();
         });
-      });
+      });*/
+      counts[i - 1] = target_data * raito + before_data * raito;
+      resolve();
     });
   }
 
