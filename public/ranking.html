@@ -140,10 +140,13 @@
   //それぞれの時間帯別文字数を取得
   async function get_all_count() {
     console.log("2 get_all_count: start");
+    let n = 0;
     for(let i = 1; i <= 3; i++) {
-      await get_now_and_before_count(i, get_now_count(i), get_before_count(i));
+      await n = get_now_and_before_count(i, get_now_count(i), get_before_count(i));
     }
-    console.log("2 get_all_count: finish");
+    if(n == 3) {
+      return "2 get_all_count: finish";
+    }
   }
 
   async function get_now_count(i) {
@@ -189,7 +192,7 @@
         });
       });*/
       counts[i - 1] = target_data * raito + before_data * raito;
-      resolve();
+      resolve(1);
     });
   }
 
@@ -202,7 +205,7 @@
       }
     }
     console.log("rank: " + rank);
-    console.log("4 sort_rooms: finish");
+    return "4 sort_rooms: finish";
   }
 
   async function compare_rooms(i, j) {
@@ -226,7 +229,7 @@
       console.log(counts[i]);
       target_area.innerText = (Math.round(counts[i])) + "pt";
     }
-    console.log("6 write_text: finish");
+    return "6 write_text: finish";
   }
 
   async function processAll() {
