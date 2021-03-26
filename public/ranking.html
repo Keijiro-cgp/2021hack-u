@@ -152,7 +152,6 @@
       var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
       var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
       target_doc.get().then((doc) => {
-        console.log(doc.data());
         counts[i - 1] = doc.data().count * raito;
         console.log(doc.data().count);
         before_doc.get().then((doc) => {
@@ -228,7 +227,6 @@
       }
     } else {
       minute = parseInt(minute / 10) * 10 - 10;
-      hour -= 1;
     }
     return hour + ":" + minute;
   }
