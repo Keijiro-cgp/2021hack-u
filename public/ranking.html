@@ -151,8 +151,7 @@
     return new Promise(resolve => {
       var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
       var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
-      await console.log(target_doc);
-      await console.log(before_doc);
+      console.log("target_doc definesd: " + target_doc);
       target_doc.get().then((doc) => {
         counts[i - 1] = doc.data().count * raito;
         console.log(doc.data().count);
