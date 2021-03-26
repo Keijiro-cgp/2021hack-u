@@ -161,6 +161,7 @@ var Chat = {
     this.countRef.get().then((doc) => {
       v = doc.data().value;
       console.log("データベース内：" + v);
+      document.getElementById("count_text").innerText = v + Array.from(str).length + "pt";
       this.countRef.set({
         value : v + Array.from(str).length
       });
@@ -169,7 +170,6 @@ var Chat = {
       var s = 0;
       this.countRef.collection("speed").doc(time_area).get().then((doc) => {
         s = doc.data().count;
-        document.getElementById("count_text").innerText = s + Array.from(str).length + "pt";
         this.countRef.collection("speed").doc(time_area).set({
           count: s + Array.from(str).length
         });
@@ -253,10 +253,6 @@ firebase.auth().onAuthStateChanged( (user) => {
   // Firestore処理開始
   Chat.init();
 });
-
-function update_counter(value) {
-  document.getElementById("count_text").innerText = value + "pt";
-}
 
 /**
 * UNIX TIME => MM-DD hh:mm
