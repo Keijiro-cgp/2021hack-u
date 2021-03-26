@@ -235,8 +235,8 @@ var Chat = {
         for(n in user_all) {
           name_li.appendChild(document.createTextNode(n));
         }
-        document.getElementById("member_list").innerText = name_li;
-        resolve("resolve_3");
+        document.getElementById("member_list").innerHTML = name_li;
+        resolve("resolved_3");
       });
     }
 
