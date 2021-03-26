@@ -206,7 +206,8 @@ var Chat = {
       document.getElementById("count_text").innerText = v + "pt";
     });
 
-    //配列に名前を追加した後、被った名前を削
+    console.log("called: addLog");
+    //配列に名前を追加した後、被った名前を削除
     const check_namelist = () => {
       return new Promise(resolve => {
         if(user_all.indexOf(data.name) == -1) {
@@ -224,8 +225,8 @@ var Chat = {
           user_all.splice(n, 1);
           n = user_all.indexOf(data.name, offset + 1);
         }
+        resolve("resolved_2");
       });
-      resolve("resolved_2");
     };
 
     const asyncCall = async () => {
