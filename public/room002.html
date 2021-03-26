@@ -19,6 +19,7 @@
     url(/font/nicokaku_v1.ttf) format("truetype");
   }
   #count_text{ font-family: "nicokaku"; }
+  #member_list{ font-family: "nicokaku"; font-size: 24pt;}
   </style>
 </head>
 <body style="background: linear-gradient(to top, gray, gray) repeat-y 400px/3px;">
@@ -208,6 +209,8 @@ var Chat = {
       v = doc.data().value;
       document.getElementById("count_text").innerText = v + "pt";
     });
+
+    all_user.push(data.name);
   },
 
   /**
@@ -261,6 +264,27 @@ firebase.auth().onAuthStateChanged( (user) => {
   // Firestore処理開始
   Chat.init();
 });
+
+var all_user = [];
+
+var update_member_list = function() {
+  console.log("called: update_member_list");
+  console.log(all_user);
+  for(let i = 0; i < all_user.length; i++) {
+    for(let j = 1; j < all_user.length; j ++) {
+      if(i != j && all_user[i] == all_user[j]) {
+        all_user.splice(j, 1);
+      }
+    }
+  }
+  let html_text = "";
+  for(let i = 0; i < all_user.length; i++) {
+    html_text += "<li>" + all_user[i] + "</li>";
+  }
+  document.getElementById("member_list").innerHTML = html_text;
+}
+
+setInterval(update_member_list, 1000);
 
 /**
 * UNIX TIME => MM-DD hh:mm
