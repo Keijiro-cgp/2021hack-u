@@ -145,7 +145,8 @@
       n += get_now_and_before_count(i, get_now_count(i), get_before_count(i));
     }
     if(n == 3) {
-      resolve("2 get_all_count: finish");
+      console.log("2 get_all_count: finish")
+      return "2 get_all_count: finish";
     }
   }
 
@@ -155,7 +156,7 @@
       var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
       target_doc.get().then((doc) => {
         var n_count = doc.data().count;
-        console.log(n_count);
+        //console.log(n_count);
         console.log("3-A get_now_count: finish");
         resolve(n_count);
       })
@@ -168,7 +169,7 @@
       var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
       before_doc.get().then((doc) => {
         var b_count = doc.data().count;
-        console.log(b_count);
+        //console.log(b_count);
         console.log("3-B get_before_count: finish");
         resolve(b_count);
       })
@@ -178,25 +179,12 @@
   async function get_now_and_before_count(i, target_data, before_data) {
     console.log("3-C get_now_and_before_count: start");
     return new Promise(resolve => {
-      //var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
-      //var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
-      //console.log("target_doc definesd: " + target_doc.data());
-      /*target_doc.get().then((doc) => {
-        counts[i - 1] = doc.data().count * raito;
-        console.log(doc.data().count);
-        before_doc.get().then((doc) => {
-          counts[i - 1] += doc.data().count * (1 - raito);
-          console.log(doc.data().count);
-          console.log("3 get_now_and_before_count: finish");
-          resolve();
-        });
-      });*/
       counts[i - 1] = target_data * raito + before_data * raito;
       resolve(1);
     });
   }
 
-  async function sort_rooms() {
+  async function sort_rooms(func) {
     console.log("4 sort_rooms: start");
     console.log("counts: " + counts);
     for(let i = 0; i < 3; i++) {
@@ -205,6 +193,7 @@
       }
     }
     console.log("rank: " + rank);
+    console.log("4 sort_rooms: finish");
     return "4 sort_rooms: finish";
   }
 
@@ -220,7 +209,7 @@
     }
   }
 
-  async function write_text() {
+  async function write_text(func) {
     console.log("6 write_text: start");
     for(let i = 0; i <= 2; i++) {
       var target_area = document.getElementById("2-" + (i + 1));
@@ -229,14 +218,13 @@
       console.log(counts[i]);
       target_area.innerText = (Math.round(counts[i])) + "pt";
     }
+    console.log("6 write_text: finish")
     return "6 write_text: finish";
   }
 
   async function processAll() {
     console.log("1 processAll: start");
-    await console.log(get_all_count());
-    await console.log(sort_rooms());
-    await console.log(write_text());
+    await write_text(sort_rooms(get_all_count()));
     console.log("1 processAll: finish")
   }
 
