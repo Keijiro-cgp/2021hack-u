@@ -232,7 +232,7 @@ var Chat = {
     const show_name_list = () => {
       return new Promise(resolve => {
         let name_li = "";
-        for(n in user_all) {
+        for(var n in user_all) {
           name_li += "<li>" + n + "</li>";
         }
         document.getElementById("member_list").innerHTML = name_li;
