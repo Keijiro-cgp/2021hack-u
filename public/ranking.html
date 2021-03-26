@@ -151,6 +151,7 @@
     return new Promise(resolve => {
       var target_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_now);
       var before_doc = db.collection("count").doc("room" + i).collection("speed").doc(time_area_before);
+      console.log(target_doc.get());
       console.log("2.5 get_now_and_before_document: finish");
       resolve(target_doc, before_doc);
     })
