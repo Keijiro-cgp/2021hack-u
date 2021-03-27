@@ -20,6 +20,13 @@
   }
   #count_text{ font-family: "nicokaku"; }
   #member_list{ font-family: "nicokaku"; font-size: 24pt;}
+  .login_state{
+    position: absolute; top: 220px; left: 40px; width: 240px; height: 40px;
+    padding: 10px 0px 0px 0px;
+    background-color: black;
+    border-radius: 20px;
+    font-family: "nicokaku"; font-size: 20pt; color: white; text-align: center;
+  }
   </style>
 </head>
 <body style="background: linear-gradient(to top, gray, gray) repeat-y 400px/3px;">
@@ -47,6 +54,10 @@
   <a href="/db/firestore3/login.html"><img src="login.png" alt="ログイン" width="180px" height="100px"></a>
 </div>
 
+<div class="login_state">
+  <div id="user_name"></div>
+</div>
+
 <!--文章打つところ-->
 <form id="form1" class="hide">
   <input type="text" id="msg" style="position:absolute; top:750px; left:510px">
@@ -58,7 +69,7 @@
 
 <!--参加者一覧-->
 <ul id="name"></ul>
-<div class="member" style="position:absolute; top:260px">
+<div class="member" style="position:absolute; top:270px">
   <img src="participant.png" alt="メンバー" width="280px" height="130px">
   <ul id="member_list"></ul>
 </div>
@@ -260,6 +271,10 @@ firebase.auth().onAuthStateChanged( (user) => {
     // ユーザー名を確保
     Chat.user.name = user.displayName;
     document.getElementById("uname").innerText = Chat.user.name;
+
+    document.getElementById("user_name").innerText = user.displayName;
+  } else {
+    document.getElementById("user_name").innerText = "ログインしていません";
   }
 
   // Firestore処理開始
